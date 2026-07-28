@@ -2,12 +2,25 @@ body {
     margin: 0;
     overflow: hidden;
 
-    font-family: "Comic Sans MS", cursive;
-
-    background-image: url("geewhizard_bkg_tiledage.png
-");
+    background-image: url("willtall.jpe");
     background-repeat: repeat;
     background-size: 300px;
 
     animation: scrollBackground 15s linear infinite;
+}
+
+@keyframes scrollBackground {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 300px 300px;
+    }
+}
+
+h1 {
+    text-align: center;
+    font-family: "Comic Sans MS", cursive;
+    color: white;
+    margin-top: 20px;
 }
