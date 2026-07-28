@@ -1,0 +1,19 @@
+body {
+    margin: 0;
+    overflow: hidden;
+
+    background-image: url("willtall.jpe");
+    background-repeat: repeat;
+    background-size: 300px;
+
+    animation: scrollBackground 15s linear infinite;
+}
+
+@keyframes scrollBackground {
+    from {
+        background-position: 0 0;
+    }
+    to {
+        background-position: 300px 300px;
+    }
+}
