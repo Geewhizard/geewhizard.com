@@ -24,3 +24,13 @@ h1 {
     color: white;
     margin-top: 20px;
 }
+.whiz-menu {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
+    width: 350px;      /* Change this to make it bigger/smaller */
+    height: auto;
+
+    z-index: 9999;
+}
