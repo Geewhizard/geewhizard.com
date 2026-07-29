@@ -49,6 +49,9 @@ h1 {
 }
 
 .gif-button {
+     position: relative;   
+    display: inline-block;
+    
     width: 80px;
     height: 80px;
 
