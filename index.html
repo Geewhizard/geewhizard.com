@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 
@@ -6,10 +5,8 @@
     <title>geepoopzard</title>
 
     <link rel="icon" type="image/png" href="favicon.png">
-
     <link rel="stylesheet" href="style.css">
 
-   
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -19,40 +16,21 @@
 
     <img src="whiz menu.png" class="whiz-menu" alt="Whizard Menu">
 
-
-    
     <div id="posts"></div>
 
-
-    
     <a href="page2.html" class="gif-button">
-
-        <img
-            src="pE6RRnsQMPPDEBdPNHWQPaLvz3Q.png"
-            class="still"
-            alt="Wizard">
-
-        <img
-            src="3dgifmaker13113.gif"
-            class="animated"
-            alt="Wizard">
-
+        <img src="pE6RRnsQMPPDEBdPNHWQPaLvz3Q.png" class="still" alt="Wizard">
+        <img src="3dgifmaker13113.gif" class="animated" alt="Wizard">
     </a>
 
-
-    <!-- YOUR EXISTING SCRIPT -->
     <script src="script.js"></script>
 
-
-    <!-- SUPABASE POST SYSTEM -->
     <script>
-
         const SUPABASE_URL =
             "https://mgouzykkbpxjtgdvghoc.supabase.co";
 
         const SUPABASE_KEY =
             "sb_publishable_NE4Ah4WBvguxwcD85QSSGg_BxmdF0MP";
-
 
         const supabaseClient =
             window.supabase.createClient(
@@ -60,38 +38,24 @@
                 SUPABASE_KEY
             );
 
-
         async function loadPosts() {
 
-            const postsDiv =
-                document.getElementById("posts");
+            const postsDiv = document.getElementById("posts");
 
-
-            const { data, error } =
-                await supabaseClient
-                    .from("posts")
-                    .select("*")
-                    .order("created_at", {
-                        ascending: false
-                    });
-
+            const { data, error } = await supabaseClient
+                .from("posts")
+                .select("*")
+                .order("created_at", {
+                    ascending: false
+                });
 
             if (error) {
-
-                console.error(
-                    "Error loading posts:",
-                    error
-                );
-
-                postsDiv.textContent =
-                    "Could not load posts.";
-
+                console.error(error);
+                postsDiv.textContent = "Could not load posts.";
                 return;
             }
 
-
             postsDiv.innerHTML = "";
-
 
             data.forEach(post => {
 
@@ -100,23 +64,101 @@
 
                 postElement.className = "post";
 
-                postElement.textContent =
-                    post.content;
+                const content =
+                    document.createElement("div");
 
-                postsDiv.appendChild(
-                    postElement
-                );
+                content.className = "post-content";
+                content.textContent = post.content;
 
+                const votes =
+                    document.createElement("div");
+
+                votes.className = "votes";
+
+                const upvote =
+                    document.createElement("button");
+
+                upvote.textContent =
+                    "⬆ " + (post.upvotes || 0);
+
+                const downvote =
+                    document.createElement("button");
+
+                downvote.textContent =
+                    "⬇ " + (post.downvotes || 0);
+
+                upvote.onclick = () =>
+                    vote(post.id, "up");
+
+                downvote.onclick = () =>
+                    vote(post.id, "down");
+
+                votes.appendChild(upvote);
+                votes.appendChild(downvote);
+
+                postElement.appendChild(content);
+                postElement.appendChild(votes);
+
+                postsDiv.appendChild(postElement);
             });
-
         }
 
+        async function vote(postId, voteType) {
 
-        // Load posts when the page opens
+            const {
+                data: { user }
+            } = await supabaseClient.auth.getUser();
+
+            if (!user) {
+                alert("You need to be logged in to vote.");
+                return;
+            }
+
+            const { error } = await supabaseClient
+                .from("post_votes")
+                .insert({
+                    post_id: postId,
+                    user_id: user.id,
+                    vote_type: voteType
+                });
+
+            if (error) {
+
+                if (error.code === "23505") {
+                    alert("You already voted on this post!");
+                } else {
+                    console.error(error);
+                    alert("Could not vote.");
+                }
+
+                return;
+            }
+
+            // Update the number
+            const column =
+                voteType === "up"
+                    ? "upvotes"
+                    : "downvotes";
+
+            const { data: post } =
+                await supabaseClient
+                    .from("posts")
+                    .select(column)
+                    .eq("id", postId)
+                    .single();
+
+            await supabaseClient
+                .from("posts")
+                .update({
+                    [column]: (post[column] || 0) + 1
+                })
+                .eq("id", postId);
+
+            loadPosts();
+        }
+
         loadPosts();
-
     </script>
 
 </body>
 </html>
-
