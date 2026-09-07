@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>GeeWhizard Admin</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <h1>GeeWhizard Admin</h1>
+
+    <div class="admin-box">
+        <textarea id="postContent" placeholder="Write your post..."></textarea>
+
+        <button onclick="makePost()">POST</button>
+
+        <p id="message"></p>
+    </div>
+
+    <script src="admin.js"></script>
+
+</body>
+</html>
