@@ -103,6 +103,11 @@
             });
         }
 
+
+        // =========================
+        // VOTING SYSTEM
+        // =========================
+
         async function vote(postId, voteType) {
 
             const {
@@ -114,31 +119,152 @@
                 return;
             }
 
-            const { error } = await supabaseClient
-                .from("post_votes")
-                .insert({
-                    post_id: postId,
-                    user_id: user.id,
-                    vote_type: voteType
-                });
 
-            if (error) {
+            // Check if user already voted
+            const { data: existingVote, error: findError } =
+                await supabaseClient
+                    .from("post_votes")
+                    .select("*")
+                    .eq("post_id", postId)
+                    .eq("user_id", user.id)
+                    .maybeSingle();
 
-                if (error.code === "23505") {
-                    alert("You already voted on this post!");
-                } else {
-                    console.error(error);
-                    alert("Could not vote.");
-                }
-
+            if (findError) {
+                console.error(findError);
                 return;
             }
 
-            // Update the number
+
+            // =========================
+            // CLICK SAME BUTTON
+            // REMOVE VOTE
+            // =========================
+
+            if (
+                existingVote &&
+                existingVote.vote_type === voteType
+            ) {
+
+                await supabaseClient
+                    .from("post_votes")
+                    .delete()
+                    .eq("id", existingVote.id);
+
+                const column =
+                    voteType === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+                const { data: post } =
+                    await supabaseClient
+                        .from("posts")
+                        .select("upvotes, downvotes")
+                        .eq("id", postId)
+                        .single();
+
+                await supabaseClient
+                    .from("posts")
+                    .update({
+                        [column]:
+                            Math.max(
+                                0,
+                                (post[column] || 0) - 1
+                            )
+                    })
+                    .eq("id", postId);
+
+                loadPosts();
+                return;
+            }
+
+
+            // =========================
+            // CHANGE VOTE
+            // UP → DOWN
+            // DOWN → UP
+            // =========================
+
+            if (existingVote) {
+
+                const oldColumn =
+                    existingVote.vote_type === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+                const newColumn =
+                    voteType === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+                // Change vote in database
+                await supabaseClient
+                    .from("post_votes")
+                    .update({
+                        vote_type: voteType
+                    })
+                    .eq("id", existingVote.id);
+
+
+                // Get current numbers
+                const { data: post } =
+                    await supabaseClient
+                        .from("posts")
+                        .select("upvotes, downvotes")
+                        .eq("id", postId)
+                        .single();
+
+
+                // Remove old vote and add new vote
+                await supabaseClient
+                    .from("posts")
+                    .update({
+
+                        upvotes:
+                            Math.max(
+                                0,
+                                (post.upvotes || 0) +
+                                (newColumn === "upvotes" ? 1 : -1)
+                            ),
+
+                        downvotes:
+                            Math.max(
+                                0,
+                                (post.downvotes || 0) +
+                                (newColumn === "downvotes" ? 1 : -1)
+                            )
+
+                    })
+                    .eq("id", postId);
+
+                loadPosts();
+                return;
+            }
+
+
+            // =========================
+            // FIRST VOTE
+            // =========================
+
+            const { error: insertError } =
+                await supabaseClient
+                    .from("post_votes")
+                    .insert({
+                        post_id: postId,
+                        user_id: user.id,
+                        vote_type: voteType
+                    });
+
+            if (insertError) {
+                console.error(insertError);
+                return;
+            }
+
+
             const column =
                 voteType === "up"
                     ? "upvotes"
                     : "downvotes";
+
 
             const { data: post } =
                 await supabaseClient
@@ -147,17 +273,23 @@
                     .eq("id", postId)
                     .single();
 
+
             await supabaseClient
                 .from("posts")
                 .update({
-                    [column]: (post[column] || 0) + 1
+                    [column]:
+                        (post[column] || 0) + 1
                 })
                 .eq("id", postId);
+
 
             loadPosts();
         }
 
+
+        // Load posts
         loadPosts();
+
     </script>
 
 </body>
