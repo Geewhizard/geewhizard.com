@@ -16,11 +16,23 @@
     <h1>GeeWhizard Admin</h1>
 
     <div class="admin-box">
-        <textarea id="postContent" placeholder="Write your post..."></textarea>
 
-        <button onclick="makePost()">POST</button>
+        <div id="loginBox">
+            <input id="email" type="email" placeholder="Email">
+            <input id="password" type="password" placeholder="Password">
+
+            <button onclick="login()">LOG IN</button>
+        </div>
+
+        <div id="postBox" style="display: none;">
+            <textarea id="postContent"
+                placeholder="Write your post..."></textarea>
+
+            <button onclick="makePost()">POST</button>
+        </div>
 
         <p id="message"></p>
+
     </div>
 
     <script src="admin.js"></script>
