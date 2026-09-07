@@ -477,6 +477,39 @@ h1 {
 
 
 /* =========================
+   PROFILE PICTURE TOGGLE
+   ========================= */
+
+/* This is the ONLY new positioning */
+#pfpToggle {
+    position: fixed;
+
+    top: 15px;
+    right: 105px;
+
+    z-index: 10000;
+
+    width: auto;
+
+    padding: 10px 14px;
+
+    background: black;
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 10px;
+
+    font-family: "Comic Sans MS", cursive;
+
+    font-size: 16px;
+
+    cursor: pointer;
+}
+
+
+/* =========================
    GIF BUTTON
    ========================= */
 
