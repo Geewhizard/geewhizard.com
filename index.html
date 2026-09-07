@@ -46,9 +46,10 @@
 
             padding: 20px;
 
-            background: white;
-            color: black;
+            background: black;
+            color: white;
 
+            border: 2px solid white;
             border-radius: 15px;
 
             box-shadow:
@@ -65,22 +66,38 @@
             padding: 8px;
             margin-bottom: 10px;
 
-            border: 1px solid #aaa;
+            background: black;
+            color: white;
+
+            border: 2px solid white;
             border-radius: 7px;
 
             box-sizing: border-box;
         }
 
 
+        #loginBox input::placeholder {
+            color: #aaa;
+        }
+
+
         #loginBox button {
             padding: 8px 12px;
 
-            border: none;
+            background: black;
+            color: white;
+
+            border: 1px solid white;
             border-radius: 7px;
 
             cursor: pointer;
 
             margin-right: 5px;
+        }
+
+
+        #loginBox button:hover {
+            background: #333;
         }
 
 
@@ -114,8 +131,6 @@
         }
 
 
-        /* PROFILE PICTURE */
-
         #userPfp {
             width: 40px;
             height: 40px;
@@ -144,7 +159,7 @@
 
 
         /* =========================
-           PFP UPLOAD
+           PFP BOX
            ========================= */
 
         #pfpBox {
@@ -159,9 +174,10 @@
 
             padding: 15px;
 
-            background: white;
-            color: black;
+            background: black;
+            color: white;
 
+            border: 2px solid white;
             border-radius: 15px;
 
             box-shadow:
@@ -183,11 +199,18 @@
         #pfpBox button {
             padding: 8px 12px;
 
-            border: none;
+            background: black;
+            color: white;
 
+            border: 1px solid white;
             border-radius: 7px;
 
             cursor: pointer;
+        }
+
+
+        #pfpBox button:hover {
+            background: #333;
         }
 
 
@@ -197,10 +220,6 @@
             font-size: 14px;
         }
 
-
-        /* =========================
-           CHANGE PFP BUTTON
-           ========================= */
 
         #changePfpButton {
             color: white;
@@ -214,7 +233,202 @@
 
 
         /* =========================
-           MAIN POST AUTHOR
+           GEEWHIZARD POST BOX
+           ========================= */
+
+        #postComposer {
+            display: none;
+
+            width: 600px;
+            max-width: 90%;
+
+            margin: 30px auto 20px;
+
+            padding: 18px;
+
+            background: black;
+
+            color: white;
+
+            border: 2px solid white;
+
+            border-radius: 15px;
+
+            text-align: left;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+
+        #postComposerTitle {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 12px;
+        }
+
+
+        #postComposerPfp {
+            width: 45px;
+            height: 45px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            border: 2px solid white;
+        }
+
+
+        #postComposerName {
+            color: #2588ff;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        #postText {
+            width: 100%;
+
+            min-height: 100px;
+
+            resize: vertical;
+
+            padding: 10px;
+
+            box-sizing: border-box;
+
+            background: black;
+
+            color: white;
+
+            border: 2px solid white;
+
+            border-radius: 10px;
+
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
+            font-size: 16px;
+        }
+
+
+        #postText::placeholder {
+            color: #aaa;
+        }
+
+
+        #postImage {
+            width: 100%;
+
+            margin-top: 10px;
+
+            color: white;
+        }
+
+
+        #postImagePreview {
+            display: none;
+
+            max-width: 100%;
+
+            max-height: 400px;
+
+            margin-top: 10px;
+
+            border: 2px solid white;
+
+            border-radius: 10px;
+
+            object-fit: contain;
+        }
+
+
+        #postComposerBottom {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-top: 12px;
+
+            flex-wrap: wrap;
+        }
+
+
+        #publishPostButton {
+            padding: 9px 15px;
+
+            background: black;
+
+            color: white;
+
+            border: 2px solid white;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
+            font-size: 15px;
+        }
+
+
+        #publishPostButton:hover {
+            background: #333;
+        }
+
+
+        #postStatus {
+            color: #aaa;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           POSTS
+           ========================= */
+
+        .post {
+            background: black;
+
+            color: white;
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+            border-radius: 15px;
+
+            border: 2px solid white;
+
+            box-shadow:
+                0 4px 12px rgba(0, 0, 0, 0.5);
+
+            font-size: 18px;
+
+            text-align: left;
+
+            white-space: pre-wrap;
+
+            overflow-wrap: break-word;
+        }
+
+
+        /* =========================
+           POST AUTHOR
            ========================= */
 
         .main-post-author {
@@ -263,6 +477,64 @@
 
 
         /* =========================
+           POST IMAGE
+           ========================= */
+
+        .post-image {
+            display: block;
+
+            width: 100%;
+
+            max-height: 600px;
+
+            margin-top: 15px;
+
+            border: 2px solid white;
+
+            border-radius: 10px;
+
+            object-fit: contain;
+
+            background: black;
+        }
+
+
+        /* =========================
+           VOTES
+           ========================= */
+
+        .votes {
+            margin-top: 12px;
+        }
+
+
+        .votes button {
+            background: black;
+
+            color: white;
+
+            border: 1px solid white;
+
+            border-radius: 7px;
+
+            padding: 6px 10px;
+
+            cursor: pointer;
+
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
+            margin-right: 5px;
+        }
+
+
+        .votes button:hover {
+            background: #333;
+        }
+
+
+        /* =========================
            REPLIES
            ========================= */
 
@@ -271,7 +543,7 @@
 
             padding-top: 12px;
 
-            border-top: 1px solid rgba(255,255,255,0.3);
+            border-top: 1px solid white;
         }
 
 
@@ -293,11 +565,13 @@
 
             margin-top: 10px;
 
-            padding: 8px;
+            padding: 10px;
 
             border-radius: 10px;
 
-            background: rgba(0,0,0,0.25);
+            background: black;
+
+            border: 1px solid white;
         }
 
 
@@ -371,11 +645,11 @@
 
             padding: 3px 8px;
 
-            border: none;
+            border: 1px solid white;
 
             border-radius: 6px;
 
-            background: #b00000;
+            background: black;
 
             color: white;
 
@@ -388,12 +662,12 @@
 
 
         .delete-reply:hover {
-            background: #e00000;
+            background: #333;
         }
 
 
         /* =========================
-           REPLY INPUT
+           REPLY FORM
            ========================= */
 
         .reply-form {
@@ -412,7 +686,11 @@
 
             padding: 8px 10px;
 
-            border: 1px solid #aaa;
+            background: black;
+
+            color: white;
+
+            border: 2px solid white;
 
             border-radius: 8px;
 
@@ -422,14 +700,19 @@
         }
 
 
+        .reply-input::placeholder {
+            color: #aaa;
+        }
+
+
         .reply-button {
             padding: 8px 12px;
 
-            border: none;
+            border: 1px solid white;
 
             border-radius: 8px;
 
-            background: #2588ff;
+            background: black;
 
             color: white;
 
@@ -442,7 +725,7 @@
 
 
         .reply-button:hover {
-            background: #1475e8;
+            background: #333;
         }
 
 
@@ -454,6 +737,121 @@
             font-size: 14px;
         }
 
+
+        /* =========================
+           GIF BUTTON
+           ========================= */
+
+        .gif-button {
+            position: relative;
+
+            display: block;
+
+            width: 210px;
+            height: 210px;
+
+            margin: 40px auto;
+
+            border-radius: 50%;
+
+            overflow: hidden;
+
+            transition:
+                width 0.35s ease,
+                height 0.35s ease,
+                border-radius 0.35s ease;
+
+            box-shadow:
+                0 0 15px rgba(0, 0, 0, 0.4);
+
+            text-decoration: none;
+        }
+
+
+        .gif-button img {
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+            height: 100%;
+
+            object-fit: cover;
+        }
+
+
+        .still {
+            display: block;
+        }
+
+
+        .animated {
+            display: none;
+        }
+
+
+        .gif-button:hover {
+            width: 260px;
+            height: 260px;
+
+            border-radius: 25px;
+        }
+
+
+        .gif-button:hover .still {
+            display: none;
+        }
+
+
+        .gif-button:hover .animated {
+            display: block;
+        }
+
+
+        /* =========================
+           MOBILE
+           ========================= */
+
+        @media (max-width: 700px) {
+
+            h1 {
+                font-size: 2em;
+            }
+
+
+            #posts {
+                width: 90%;
+            }
+
+
+            .post {
+                font-size: 16px;
+            }
+
+
+            #postComposer {
+                width: 90%;
+            }
+
+
+            .whiz-menu {
+                width: 200px;
+            }
+
+
+            .gif-button {
+                width: 170px;
+                height: 170px;
+            }
+
+
+            .gif-button:hover {
+                width: 210px;
+                height: 210px;
+            }
+
+        }
+
     </style>
 
 </head>
@@ -463,7 +861,7 @@
 
 
     <!-- =========================
-         LOGIN
+         LOGIN BUTTON
          ========================= -->
 
     <div
@@ -519,13 +917,11 @@
 
         <h3>Login</h3>
 
-
         <input
             id="username"
             type="text"
             placeholder="Username"
         >
-
 
         <input
             id="password"
@@ -533,16 +929,13 @@
             placeholder="Password"
         >
 
-
         <button onclick="login()">
             Login
         </button>
 
-
         <button onclick="signup()">
             Sign Up
         </button>
-
 
         <div id="loginStatus"></div>
 
@@ -558,7 +951,9 @@
         onclick="event.stopPropagation()"
     >
 
-        <strong>Change Profile Picture</strong>
+        <strong>
+            Change Profile Picture
+        </strong>
 
         <br><br>
 
@@ -578,10 +973,12 @@
 
 
     <!-- =========================
-         MAIN PAGE
+         TITLE
          ========================= -->
 
-    <h1>geewhizard.com</h1>
+    <h1>
+        geewhizard.com
+    </h1>
 
 
     <img
@@ -590,6 +987,67 @@
         alt="Whizard Menu"
     >
 
+
+    <!-- =========================
+         GEEWHIZARD POST COMPOSER
+         ========================= -->
+
+    <div id="postComposer">
+
+        <div id="postComposerTitle">
+
+            <img
+                id="postComposerPfp"
+                src="whizardpfp.png"
+                alt="Geewhizard"
+            >
+
+            <span id="postComposerName">
+                Geewhizard
+            </span>
+
+        </div>
+
+
+        <textarea
+            id="postText"
+            placeholder="Write a post..."
+            maxlength="5000"
+        ></textarea>
+
+
+        <input
+            id="postImage"
+            type="file"
+            accept="image/*"
+        >
+
+
+        <img
+            id="postImagePreview"
+            alt="Post image preview"
+        >
+
+
+        <div id="postComposerBottom">
+
+            <button
+                id="publishPostButton"
+                onclick="createPost()"
+            >
+                Post
+            </button>
+
+            <span id="postStatus"></span>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         POSTS
+         ========================= -->
 
     <div id="posts"></div>
 
@@ -643,9 +1101,7 @@
 
 
         // =========================
-        // YOUR ACCOUNT
-        // ONLY THIS ACCOUNT CAN
-        // DELETE REPLIES
+        // GEEWHIZARD ACCOUNT
         // =========================
 
         const OWNER_ID =
@@ -656,7 +1112,7 @@
 
 
         // =========================
-        // LOGIN BOX
+        // LOGIN
         // =========================
 
         function toggleLogin(event) {
@@ -675,10 +1131,8 @@
                     "pfpBox"
                 );
 
-
             pfpBox.style.display =
                 "none";
-
 
             if (
                 box.style.display ===
@@ -754,13 +1208,16 @@
                 data,
                 error
             } =
-                await supabaseClient.auth.signUp({
+                await supabaseClient.auth
+                    .signUp({
 
-                    email: email,
+                        email:
+                            email,
 
-                    password: password
+                        password:
+                            password
 
-                });
+                    });
 
 
             if (error) {
@@ -812,7 +1269,9 @@
                 "Account created!";
 
 
-            updateUserDisplay();
+            await updateUserDisplay();
+
+            await loadPosts();
 
         }
 
@@ -981,7 +1440,7 @@
 
 
         // =========================
-        // RESIZE + COMPRESS IMAGE
+        // PROCESS PFP
         // =========================
 
         function processImage(file) {
@@ -1306,7 +1765,7 @@
 
 
         // =========================
-        // SHOW USER
+        // UPDATE USER DISPLAY
         // =========================
 
         async function updateUserDisplay() {
@@ -1344,6 +1803,16 @@
                 );
 
 
+            const postComposer =
+                document.getElementById(
+                    "postComposer"
+                );
+
+
+            // =========================
+            // LOGGED OUT
+            // =========================
+
             if (!user) {
 
                 loginButton.style.display =
@@ -1358,9 +1827,17 @@
                     "none";
 
 
+                postComposer.style.display =
+                    "none";
+
+
                 return;
             }
 
+
+            // =========================
+            // PROFILE
+            // =========================
 
             const {
                 data: profile
@@ -1410,6 +1887,416 @@
 
             userDisplay.style.display =
                 "flex";
+
+
+            // =========================
+            // ONLY GEEWHIZARD GETS
+            // THE POST BOX
+            // =========================
+
+            if (
+                user.id ===
+                OWNER_ID
+            ) {
+
+                postComposer.style.display =
+                    "block";
+
+            } else {
+
+                postComposer.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        // =========================
+        // IMAGE PREVIEW
+        // =========================
+
+        document.getElementById(
+            "postImage"
+        ).addEventListener(
+            "change",
+            function() {
+
+                const file =
+                    this.files[0];
+
+
+                const preview =
+                    document.getElementById(
+                        "postImagePreview"
+                    );
+
+
+                if (!file) {
+
+                    preview.style.display =
+                        "none";
+
+                    preview.src =
+                        "";
+
+                    return;
+                }
+
+
+                if (
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ) {
+
+                    alert(
+                        "Please choose an image."
+                    );
+
+                    this.value =
+                        "";
+
+                    preview.style.display =
+                        "none";
+
+                    return;
+                }
+
+
+                preview.src =
+                    URL.createObjectURL(
+                        file
+                    );
+
+
+                preview.style.display =
+                    "block";
+
+            }
+        );
+
+
+        // =========================
+        // CREATE GEEWHIZARD POST
+        // =========================
+
+        async function createPost() {
+
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth
+                    .getUser();
+
+
+            if (!user) {
+
+                alert(
+                    "You need to be logged in."
+                );
+
+                return;
+            }
+
+
+            // SECURITY CHECK
+
+            if (
+                user.id !==
+                OWNER_ID
+            ) {
+
+                alert(
+                    "Only Geewhizard can create posts."
+                );
+
+                return;
+            }
+
+
+            const text =
+                document.getElementById(
+                    "postText"
+                ).value.trim();
+
+
+            const imageInput =
+                document.getElementById(
+                    "postImage"
+                );
+
+
+            const imageFile =
+                imageInput.files[0];
+
+
+            const status =
+                document.getElementById(
+                    "postStatus"
+                );
+
+
+            const button =
+                document.getElementById(
+                    "publishPostButton"
+                );
+
+
+            if (
+                !text &&
+                !imageFile
+            ) {
+
+                status.textContent =
+                    "Write something or choose an image.";
+
+                return;
+            }
+
+
+            button.disabled =
+                true;
+
+
+            status.textContent =
+                "Posting...";
+
+
+            let imageUrl =
+                null;
+
+
+            try {
+
+                // =========================
+                // UPLOAD IMAGE FIRST
+                // =========================
+
+                if (imageFile) {
+
+                    if (
+                        !imageFile.type.startsWith(
+                            "image/"
+                        )
+                    ) {
+
+                        status.textContent =
+                            "That isn't an image.";
+
+                        button.disabled =
+                            false;
+
+                        return;
+                    }
+
+
+                    status.textContent =
+                        "Uploading image...";
+
+
+                    const extension =
+                        imageFile.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+
+                    const safeExtension =
+                        [
+                            "jpg",
+                            "jpeg",
+                            "png",
+                            "gif",
+                            "webp"
+                        ].includes(
+                            extension
+                        )
+                            ? extension
+                            : "jpg";
+
+
+                    const fileName =
+                        Date.now() +
+                        "-" +
+                        Math.random()
+                            .toString(36)
+                            .substring(
+                                2,
+                                10
+                            ) +
+                        "." +
+                        safeExtension;
+
+
+                    const filePath =
+                        "posts/" +
+                        fileName;
+
+
+                    const {
+                        error:
+                            imageUploadError
+                    } =
+                        await supabaseClient
+                            .storage
+                            .from(
+                                "post-images"
+                            )
+                            .upload(
+
+                                filePath,
+
+                                imageFile,
+
+                                {
+
+                                    contentType:
+                                        imageFile.type,
+
+                                    upsert:
+                                        false
+
+                                }
+
+                            );
+
+
+                    if (
+                        imageUploadError
+                    ) {
+
+                        console.error(
+                            imageUploadError
+                        );
+
+                        status.textContent =
+                            "Image upload failed: " +
+                            imageUploadError.message;
+
+                        button.disabled =
+                            false;
+
+                        return;
+                    }
+
+
+                    const {
+                        data:
+                            publicUrlData
+                    } =
+                        supabaseClient
+                            .storage
+                            .from(
+                                "post-images"
+                            )
+                            .getPublicUrl(
+                                filePath
+                            );
+
+
+                    imageUrl =
+                        publicUrlData
+                            .publicUrl;
+
+                }
+
+
+                // =========================
+                // CREATE POST
+                // =========================
+
+                status.textContent =
+                    "Creating post...";
+
+
+                const {
+                    error:
+                        postError
+                } =
+                    await supabaseClient
+                        .from("posts")
+                        .insert({
+
+                            content:
+                                text,
+
+                            image_url:
+                                imageUrl
+
+                        });
+
+
+                if (postError) {
+
+                    console.error(
+                        postError
+                    );
+
+                    status.textContent =
+                        "Post failed: " +
+                        postError.message;
+
+                    button.disabled =
+                        false;
+
+                    return;
+                }
+
+
+                // =========================
+                // CLEAR FORM
+                // =========================
+
+                document.getElementById(
+                    "postText"
+                ).value =
+                    "";
+
+
+                imageInput.value =
+                    "";
+
+
+                const preview =
+                    document.getElementById(
+                        "postImagePreview"
+                    );
+
+
+                preview.src =
+                    "";
+
+
+                preview.style.display =
+                    "none";
+
+
+                status.textContent =
+                    "Posted!";
+
+
+                button.disabled =
+                    false;
+
+
+                await loadPosts();
+
+            }
+
+            catch (error) {
+
+                console.error(error);
+
+                status.textContent =
+                    "Something went wrong.";
+
+                button.disabled =
+                    false;
+
+            }
 
         }
 
@@ -1482,17 +2369,19 @@
 
 
             // =========================
-            // GET REPLY USER IDS
+            // REPLY USER IDS
             // =========================
 
             const replyUserIds =
                 [
                     ...new Set(
-                        (replies || [])
-                            .map(
-                                reply =>
-                                    reply.user_id
-                            )
+                        (
+                            replies ||
+                            []
+                        ).map(
+                            reply =>
+                                reply.user_id
+                        )
                     )
                 ];
 
@@ -1501,12 +2390,14 @@
 
 
             if (
-                replyUserIds.length > 0
+                replyUserIds.length >
+                0
             ) {
 
                 const {
                     data: profileData,
-                    error: profileError
+                    error:
+                        profileError
                 } =
                     await supabaseClient
                         .from("profiles")
@@ -1522,23 +2413,19 @@
                 if (profileError) {
 
                     console.error(
-                        "Could not load reply profiles:",
                         profileError
                     );
 
                 } else {
 
                     profiles =
-                        profileData || [];
+                        profileData ||
+                        [];
 
                 }
 
             }
 
-
-            // =========================
-            // MAKE PROFILE MAP
-            // =========================
 
             const profileMap = {};
 
@@ -1554,7 +2441,8 @@
             );
 
 
-            postsDiv.innerHTML = "";
+            postsDiv.innerHTML =
+                "";
 
 
             if (
@@ -1570,7 +2458,7 @@
 
 
             // =========================
-            // CREATE POSTS
+            // CREATE EACH POST
             // =========================
 
             posts.forEach(
@@ -1587,7 +2475,7 @@
 
 
                     // =========================
-                    // MAIN POST AUTHOR
+                    // AUTHOR
                     // =========================
 
                     const author =
@@ -1675,7 +2563,7 @@
 
 
                     // =========================
-                    // POST CONTENT
+                    // TEXT
                     // =========================
 
                     const content =
@@ -1689,7 +2577,59 @@
 
 
                     content.textContent =
-                        post.content;
+                        post.content ||
+                        "";
+
+
+                    postElement.appendChild(
+                        author
+                    );
+
+
+                    if (post.content) {
+
+                        postElement.appendChild(
+                            content
+                        );
+
+                    }
+
+
+                    // =========================
+                    // IMAGE
+                    // =========================
+
+                    if (
+                        post.image_url
+                    ) {
+
+                        const image =
+                            document.createElement(
+                                "img"
+                            );
+
+
+                        image.className =
+                            "post-image";
+
+
+                        image.src =
+                            post.image_url;
+
+
+                        image.alt =
+                            "Post image";
+
+
+                        image.loading =
+                            "lazy";
+
+
+                        postElement.appendChild(
+                            image
+                        );
+
+                    }
 
 
                     // =========================
@@ -1760,8 +2700,13 @@
                     );
 
 
+                    postElement.appendChild(
+                        votes
+                    );
+
+
                     // =========================
-                    // REPLIES CONTAINER
+                    // REPLIES
                     // =========================
 
                     const repliesContainer =
@@ -1793,13 +2738,10 @@
                     );
 
 
-                    // =========================
-                    // GET REPLIES FOR THIS POST
-                    // =========================
-
                     const postReplies =
                         (
-                            replies || []
+                            replies ||
+                            []
                         ).filter(
                             reply =>
                                 Number(
@@ -1810,10 +2752,6 @@
                                 )
                         );
 
-
-                    // =========================
-                    // DISPLAY REPLIES
-                    // =========================
 
                     postReplies.forEach(
                         reply => {
@@ -1924,7 +2862,6 @@
 
                             // =========================
                             // DELETE BUTTON
-                            // ONLY YOU GET THIS
                             // =========================
 
                             if (
@@ -2121,25 +3058,6 @@
                     }
 
 
-                    // =========================
-                    // PUT EVERYTHING TOGETHER
-                    // =========================
-
-                    postElement.appendChild(
-                        author
-                    );
-
-
-                    postElement.appendChild(
-                        content
-                    );
-
-
-                    postElement.appendChild(
-                        votes
-                    );
-
-
                     postElement.appendChild(
                         repliesContainer
                     );
@@ -2239,7 +3157,8 @@
             }
 
 
-            input.value = "";
+            input.value =
+                "";
 
 
             await loadPosts();
@@ -2265,12 +3184,9 @@
 
 
             if (!user) {
-
                 return;
             }
 
-
-            // Front-end check
 
             if (
                 user.id !==
@@ -2383,9 +3299,7 @@
             }
 
 
-            // =========================
             // REMOVE SAME VOTE
-            // =========================
 
             if (
                 existingVote &&
@@ -2467,18 +3381,9 @@
             }
 
 
-            // =========================
             // CHANGE VOTE
-            // =========================
 
             if (existingVote) {
-
-                const oldColumn =
-                    existingVote.vote_type ===
-                    "up"
-                        ? "upvotes"
-                        : "downvotes";
-
 
                 const newColumn =
                     voteType === "up"
@@ -2486,18 +3391,32 @@
                         : "downvotes";
 
 
-                await supabaseClient
-                    .from("post_votes")
-                    .update({
+                const {
+                    error:
+                        changeError
+                } =
+                    await supabaseClient
+                        .from("post_votes")
+                        .update({
 
-                        vote_type:
-                            voteType
+                            vote_type:
+                                voteType
 
-                    })
-                    .eq(
-                        "id",
-                        existingVote.id
+                        })
+                        .eq(
+                            "id",
+                            existingVote.id
+                        );
+
+
+                if (changeError) {
+
+                    console.error(
+                        changeError
                     );
+
+                    return;
+                }
 
 
                 const {
@@ -2567,9 +3486,7 @@
             }
 
 
-            // =========================
             // FIRST VOTE
-            // =========================
 
             const {
                 error: insertError
@@ -2648,7 +3565,7 @@
 
 
         // =========================
-        // DATE FORMAT
+        // DATE
         // =========================
 
         function formatDate(
@@ -2699,8 +3616,6 @@
                     );
 
 
-                // Close login box
-
                 if (
                     loginBox.style.display ===
                     "block" &&
@@ -2718,8 +3633,6 @@
 
                 }
 
-
-                // Close PFP box
 
                 if (
                     pfpBox.style.display ===
