@@ -1,27 +1,32 @@
 /* =========================
    MAIN PAGE
-========================= */
+   ========================= */
+
+* {
+    box-sizing: border-box;
+}
 
 body {
     margin: 0;
-    padding: 0;
+    min-height: 100vh;
+
+    color: white;
+    font-family: "Comic Sans MS", cursive;
+    text-align: center;
 
     background-image: url("geewhizard_bkg_tiledage.png");
-    background-size: 300px 300px;
     background-repeat: repeat;
+    background-size: 300px;
 
-    animation: moveBackground 10s linear infinite;
-
-    font-family: "Comic Sans MS", cursive;
-    color: white;
-
-    min-height: 100vh;
+    animation: scrollBackground 15s linear infinite;
 }
 
 
-/* Animated diagonal background */
+/* =========================
+   MOVING BACKGROUND
+   ========================= */
 
-@keyframes moveBackground {
+@keyframes scrollBackground {
     from {
         background-position: 0 0;
     }
@@ -34,62 +39,450 @@ body {
 
 /* =========================
    TITLE
-========================= */
+   ========================= */
 
 h1 {
-    text-align: center;
-
+    margin-top: 20px;
+    font-size: 3em;
     color: white;
-
-    font-family: "Comic Sans MS", cursive;
 
     text-shadow:
         3px 3px 0 black,
-        -3px -3px 0 black,
-        3px -3px 0 black,
-        -3px 3px 0 black;
-
-    margin-top: 30px;
+        -2px -2px 0 black,
+        2px -2px 0 black,
+        -2px 2px 0 black;
 }
 
 
 /* =========================
-   LOGIN BUTTON
-========================= */
+   WHIZARD MENU IMAGE
+   ========================= */
 
-#loginButton {
-    position: absolute;
+.whiz-menu {
+    position: fixed;
 
-    top: 15px;
-    right: 15px;
+    bottom: 0;
+    left: 0;
 
-    z-index: 10000;
+    width: 350px;
+    height: auto;
 
+    z-index: 9999;
+}
+
+
+/* =========================
+   POSTS
+   ========================= */
+
+#posts {
+    width: 600px;
+    max-width: 90%;
+
+    margin: 40px auto;
+}
+
+
+/* =========================
+   INDIVIDUAL POST
+   ========================= */
+
+.post {
     background: black;
+
     color: white;
 
-    border: 2px solid white;
-    border-radius: 10px;
+    padding: 20px;
 
-    padding: 10px 14px;
+    margin-bottom: 20px;
+
+    border-radius: 15px;
+
+    border: 2px solid white;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.5);
+
+    font-size: 18px;
+
+    text-align: left;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: break-word;
+}
+
+
+/* =========================
+   POST AUTHOR
+   ========================= */
+
+.main-post-author {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 10px;
+}
+
+
+.main-post-pfp {
+    width: 45px;
+    height: 45px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid white;
+}
+
+
+.main-post-name {
+    color: #2588ff;
 
     font-family: "Comic Sans MS", cursive;
-    font-size: 16px;
+
+    font-size: 20px;
+
+    font-weight: bold;
+}
+
+
+.main-post-date {
+    color: #aaa;
+
+    font-size: 12px;
+
+    display: block;
+}
+
+
+/* =========================
+   VOTES
+   ========================= */
+
+.votes {
+    margin-top: 12px;
+}
+
+
+.votes button {
+    background: black;
+
+    color: white;
+
+    border: 1px solid white;
+
+    border-radius: 7px;
+
+    padding: 6px 10px;
+
+    cursor: pointer;
+
+    font-family: "Comic Sans MS", cursive;
+
+    margin-right: 5px;
+}
+
+
+.votes button:hover {
+    background: #222;
+}
+
+
+/* =========================
+   REPLIES
+   ========================= */
+
+.replies-container {
+    margin-top: 15px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid white;
+}
+
+
+.replies-title {
+    color: white;
+
+    font-size: 18px;
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================
+   INDIVIDUAL REPLY
+   ========================= */
+
+.reply {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 8px;
+
+    margin-top: 10px;
+
+    padding: 10px;
+
+    border-radius: 10px;
+
+    background: black;
+
+    border: 1px solid white;
+}
+
+
+.reply-pfp {
+    width: 35px;
+    height: 35px;
+
+    min-width: 35px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 1px solid white;
+}
+
+
+.reply-content-area {
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.reply-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-wrap: wrap;
+}
+
+
+.reply-username {
+    color: #58a6ff;
+
+    font-weight: bold;
+
+    font-size: 15px;
+}
+
+
+.reply-date {
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+.reply-text {
+    color: white;
+
+    margin-top: 3px;
+
+    white-space: pre-wrap;
+
+    word-wrap: break-word;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   DELETE REPLY
+   ========================= */
+
+.delete-reply {
+    margin-left: auto;
+
+    padding: 3px 8px;
+
+    border: 1px solid white;
+
+    border-radius: 6px;
+
+    background: black;
+
+    color: white;
+
+    font-family: "Comic Sans MS", cursive;
 
     cursor: pointer;
 }
 
-#loginButton:hover {
+
+.delete-reply:hover {
+    background: #333;
+}
+
+
+/* =========================
+   REPLY FORM
+   ========================= */
+
+.reply-form {
+    display: flex;
+
+    gap: 7px;
+
+    margin-top: 12px;
+}
+
+
+.reply-input {
+    flex: 1;
+
+    min-width: 0;
+
+    padding: 8px 10px;
+
+    background: black;
+
+    color: white;
+
+    border: 2px solid white;
+
+    border-radius: 8px;
+
+    font-family: "Comic Sans MS", cursive;
+}
+
+
+.reply-input::placeholder {
+    color: #aaa;
+}
+
+
+.reply-button {
+    padding: 8px 12px;
+
+    border: 1px solid white;
+
+    border-radius: 8px;
+
+    background: black;
+
+    color: white;
+
+    font-family: "Comic Sans MS", cursive;
+
+    cursor: pointer;
+}
+
+
+.reply-button:hover {
+    background: #333;
+}
+
+
+.login-to-reply {
+    color: #aaa;
+
+    margin-top: 10px;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   LOGIN BOX
+   ========================= */
+
+#loginBox {
+    background: black;
+
+    color: white;
+
+    border: 2px solid white;
+}
+
+
+/* LOGIN INPUTS */
+
+#loginBox input {
+    background: black;
+
+    color: white;
+
+    border: 2px solid white;
+}
+
+
+#loginBox input::placeholder {
+    color: #aaa;
+}
+
+
+/* LOGIN BUTTONS */
+
+#loginBox button {
+    background: black;
+
+    color: white;
+
+    border: 1px solid white;
+}
+
+
+#loginBox button:hover {
+    background: #333;
+}
+
+
+/* =========================
+   PFP BOX
+   ========================= */
+
+#pfpBox {
+    background: black;
+
+    color: white;
+
+    border: 2px solid white;
+}
+
+
+/* PFP INPUT */
+
+#pfpBox input {
+    color: white;
+}
+
+
+/* PFP BUTTON */
+
+#pfpBox button {
+    background: black;
+
+    color: white;
+
+    border: 1px solid white;
+}
+
+
+#pfpBox button:hover {
     background: #333;
 }
 
 
 /* =========================
    PROFILE PICTURE TOGGLE
-========================= */
+   ========================= */
 
+/* This is the ONLY new positioning */
 #pfpToggle {
-    position: absolute;
+    position: fixed;
 
     top: 15px;
     right: 105px;
@@ -101,601 +494,146 @@ h1 {
     padding: 10px 14px;
 
     background: black;
+
     color: white;
 
     border: 2px solid white;
+
     border-radius: 10px;
 
     font-family: "Comic Sans MS", cursive;
+
     font-size: 16px;
 
     cursor: pointer;
 }
 
-#pfpToggle:hover {
-    background: #333;
-}
-
 
 /* =========================
-   USER DISPLAY
-========================= */
+   GIF BUTTON
+   ========================= */
 
-#userDisplay {
-    position: absolute;
+.gif-button {
+    position: relative;
 
-    top: 65px;
-    right: 15px;
+    display: block;
 
-    color: white;
+    width: 210px;
+    height: 210px;
 
-    font-size: 16px;
-
-    text-shadow: 2px 2px 0 black;
-}
-
-
-/* =========================
-   LOGIN BOX
-========================= */
-
-#loginBox {
-    position: absolute;
-
-    top: 60px;
-    right: 15px;
-
-    z-index: 9999;
-
-    width: 280px;
-
-    padding: 20px;
-
-    background: black;
-    color: white;
-
-    border: 2px solid white;
-    border-radius: 15px;
-
-    box-sizing: border-box;
-}
-
-#loginBox h2 {
-    margin-top: 0;
-
-    text-align: center;
-}
-
-#loginBox input {
-    width: 100%;
-
-    box-sizing: border-box;
-
-    padding: 10px;
-
-    margin-bottom: 10px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-}
-
-#loginBox button {
-    padding: 8px 12px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-#loginBox button:hover {
-    background: #ddd;
-}
-
-#loginMessage {
-    text-align: center;
-}
-
-
-/* =========================
-   PROFILE PICTURE BOX
-========================= */
-
-#pfpBox {
-    width: 350px;
-
-    max-width: 90%;
-
-    margin: 20px auto;
-
-    padding: 10px;
-
-    box-sizing: border-box;
-
-    background: black;
-    color: white;
-
-    border: 2px solid white;
-    border-radius: 15px;
-
-    text-align: center;
-}
-
-#pfpContent h2 {
-    margin-top: 5px;
-}
-
-
-/* Current profile picture */
-
-#currentPfp {
-    width: 100px;
-    height: 100px;
-
-    object-fit: cover;
+    margin: 40px auto;
 
     border-radius: 50%;
 
-    border: 3px solid white;
-}
+    overflow: hidden;
 
+    transition:
+        width 0.35s ease,
+        height 0.35s ease,
+        border-radius 0.35s ease;
 
-/* PFP file input */
+    box-shadow:
+        0 0 15px rgba(0, 0, 0, 0.4);
 
-#pfpContent input[type="file"] {
-    max-width: 100%;
-
-    margin: 10px 0;
-}
-
-
-/* PFP upload button */
-
-#pfpContent button {
-    padding: 10px 14px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-#pfpContent button:hover {
-    background: #ddd;
+    text-decoration: none;
 }
 
 
 /* =========================
-   POST COMPOSER
-========================= */
+   IMAGES INSIDE GIF BUTTON
+   ========================= */
 
-#postComposer {
-    width: 600px;
+.gif-button img {
+    position: absolute;
 
-    max-width: 90%;
+    inset: 0;
 
-    margin: 30px auto;
-
-    padding: 20px;
-
-    box-sizing: border-box;
-
-    background: black;
-    color: white;
-
-    border: 2px solid white;
-    border-radius: 15px;
-}
-
-#postComposer h2 {
-    margin-top: 0;
-
-    text-align: center;
-}
-
-#postContent {
     width: 100%;
+    height: 100%;
 
-    min-height: 120px;
-
-    box-sizing: border-box;
-
-    padding: 10px;
-
-    resize: vertical;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 10px;
-
-    font-family: "Comic Sans MS", cursive;
-    font-size: 16px;
-}
-
-#postComposer button {
-    padding: 10px 16px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-#postComposer button:hover {
-    background: #ddd;
+    object-fit: cover;
 }
 
 
 /* =========================
-   GO TO BOTTOM BUTTON
-========================= */
+   STILL IMAGE
+   ========================= */
 
-#bottomButton {
-    display: block;
-
-    margin: 15px auto;
-
-    padding: 10px 18px;
-
-    background: black;
-    color: white;
-
-    border: 2px solid white;
-    border-radius: 10px;
-
-    font-family: "Comic Sans MS", cursive;
-    font-size: 16px;
-
-    cursor: pointer;
-}
-
-#bottomButton:hover {
-    background: #333;
-}
-
-
-/* =========================
-   POSTS
-========================= */
-
-#posts {
-    width: 600px;
-
-    max-width: 90%;
-
-    margin: 30px auto;
-
-    box-sizing: border-box;
-}
-
-
-/* Individual post */
-
-.post {
-    background: black;
-
-    color: white;
-
-    border: 2px solid white;
-    border-radius: 15px;
-
-    padding: 20px;
-
-    margin-bottom: 20px;
-
-    box-sizing: border-box;
-
-    overflow-wrap: break-word;
-}
-
-
-/* =========================
-   POST HEADER
-========================= */
-
-.post-header {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-bottom: 10px;
-}
-
-.post-author {
-    font-weight: bold;
-
-    font-size: 18px;
-}
-
-.post-date {
-    font-size: 12px;
-
-    opacity: 0.7;
-}
-
-
-/* =========================
-   POST CONTENT
-========================= */
-
-.post-content {
-    font-size: 17px;
-
-    line-height: 1.5;
-
-    white-space: pre-wrap;
-
-    overflow-wrap: break-word;
-}
-
-
-/* =========================
-   POST IMAGES
-========================= */
-
-.post-image {
-    display: block;
-
-    max-width: 100%;
-
-    max-height: 600px;
-
-    object-fit: contain;
-
-    margin: 15px auto;
-
-    border-radius: 10px;
-
-    border: 2px solid white;
-}
-
-
-/* =========================
-   VOTING
-========================= */
-
-.voting {
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    margin-top: 15px;
-}
-
-.voting button {
-    background: black;
-
-    color: white;
-
-    border: 2px solid white;
-
-    border-radius: 8px;
-
-    padding: 6px 10px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-.voting button:hover {
-    background: #333;
-}
-
-.vote-count {
-    font-weight: bold;
-}
-
-
-/* =========================
-   REPLIES
-========================= */
-
-.replies {
-    margin-top: 20px;
-
-    padding-top: 15px;
-
-    border-top: 2px solid white;
-}
-
-.reply {
-    background: #111;
-
-    border: 1px solid white;
-
-    border-radius: 10px;
-
-    padding: 10px;
-
-    margin-top: 10px;
-}
-
-.reply-author {
-    font-weight: bold;
-}
-
-.reply-content {
-    margin-top: 5px;
-
-    white-space: pre-wrap;
-
-    overflow-wrap: break-word;
-}
-
-
-/* =========================
-   REPLY INPUT
-========================= */
-
-.reply-form {
-    margin-top: 15px;
-}
-
-.reply-form textarea {
-    width: 100%;
-
-    min-height: 70px;
-
-    box-sizing: border-box;
-
-    padding: 8px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    resize: vertical;
-}
-
-.reply-form button {
-    margin-top: 8px;
-
-    padding: 8px 12px;
-
-    background: white;
-    color: black;
-
-    border: 2px solid white;
-    border-radius: 8px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-.reply-form button:hover {
-    background: #ddd;
-}
-
-
-/* =========================
-   DELETE REPLY BUTTON
-========================= */
-
-.delete-reply {
-    float: right;
-
-    background: black;
-    color: white;
-
-    border: 1px solid white;
-
-    border-radius: 6px;
-
-    padding: 3px 7px;
-
-    font-family: "Comic Sans MS", cursive;
-
-    cursor: pointer;
-}
-
-.delete-reply:hover {
-    background: #333;
-}
-
-
-/* =========================
-   WHIZ MENU / GIF BUTTON
-========================= */
-
-.whiz-menu {
-    position: fixed;
-
-    bottom: 20px;
-    left: 20px;
-
-    width: 350px;
-
-    z-index: 9000;
-}
-
-.whiz-menu img {
-    width: 100%;
-
-    height: auto;
-
+.still {
     display: block;
 }
 
 
 /* =========================
-   GENERAL BUTTONS
-========================= */
+   ANIMATED GIF
+   ========================= */
 
-button {
-    font-family: "Comic Sans MS", cursive;
+.animated {
+    display: none;
+}
+
+
+/* =========================
+   GIF BUTTON HOVER
+   ========================= */
+
+.gif-button:hover {
+    width: 260px;
+    height: 260px;
+
+    border-radius: 25px;
+}
+
+
+/* Hide PNG on hover */
+
+.gif-button:hover .still {
+    display: none;
+}
+
+
+/* Show GIF on hover */
+
+.gif-button:hover .animated {
+    display: block;
 }
 
 
 /* =========================
    MOBILE
-========================= */
+   ========================= */
 
 @media (max-width: 700px) {
 
-    #pfpToggle {
-        right: 100px;
-
-        font-size: 14px;
-
-        padding: 8px 10px;
+    h1 {
+        font-size: 2em;
     }
 
-    #loginButton {
-        right: 10px;
-
-        font-size: 14px;
-
-        padding: 8px 10px;
-    }
-
-    #posts {
-        width: 95%;
-    }
-
-    #postComposer {
-        width: 95%;
-    }
-
-    #pfpBox {
-        width: 95%;
-    }
 
     .whiz-menu {
         width: 200px;
-
-        bottom: 10px;
-        left: 10px;
     }
+
+
+    #posts {
+        width: 90%;
+    }
+
+
+    .post {
+        font-size: 16px;
+    }
+
+
+    .gif-button {
+        width: 170px;
+        height: 170px;
+    }
+
+
+    .gif-button:hover {
+        width: 210px;
+        height: 210px;
+    }
+
 }
