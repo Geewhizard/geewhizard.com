@@ -148,6 +148,45 @@
 
 
         /* =========================
+           PROFILE PICTURE BUTTON
+           ========================= */
+
+        #pfpToggle {
+
+            position: absolute;
+
+            top: 15px;
+            right: 105px;
+
+            z-index: 10000;
+
+            width: auto;
+
+            padding: 10px 14px;
+
+            background: black;
+            color: white;
+
+            border: 2px solid white;
+            border-radius: 10px;
+
+            font-family: "Comic Sans MS", cursive;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+        }
+
+
+        #pfpToggle:hover {
+
+            background: #333;
+
+        }
+
+
+        /* =========================
            COLLAPSIBLE PFP BOX
            ========================= */
 
@@ -172,45 +211,9 @@
         }
 
 
-        #pfpToggle {
-
-            width: 100%;
-
-            padding: 10px;
-
-            background: black;
-            color: white;
-
-            border: none;
-
-            font-family: "Comic Sans MS", cursive;
-
-            font-size: 18px;
-
-            cursor: pointer;
-
-        }
-
-
         #pfpContent {
 
-            display: none;
-
             padding-top: 10px;
-
-        }
-
-
-        #pfpBox.expanded #pfpContent {
-
-            display: block;
-
-        }
-
-
-        #pfpBox.expanded #pfpToggle {
-
-            border-bottom: 2px solid white;
 
         }
 
@@ -745,6 +748,16 @@
     </button>
 
 
+    <!-- PROFILE PICTURE BUTTON -->
+
+    <button
+        id="pfpToggle"
+        onclick="togglePfpBox()"
+    >
+        ▼ Profile Picture
+    </button>
+
+
     <div id="userDisplay"></div>
 
 
@@ -785,14 +798,6 @@
          ========================= -->
 
     <div id="pfpBox">
-
-        <button
-            id="pfpToggle"
-            onclick="togglePfpBox()"
-        >
-            ▼ Profile Picture
-        </button>
-
 
         <div id="pfpContent">
 
@@ -1011,24 +1016,24 @@
                 );
 
 
-            pfpBox.classList.toggle(
-                "expanded"
-            );
-
-
             if (
-                pfpBox.classList.contains(
-                    "expanded"
-                )
+                pfpBox.style.display ===
+                "block"
             ) {
 
-                toggle.textContent =
-                    "▲ Profile Picture";
-
-            } else {
+                pfpBox.style.display =
+                    "none";
 
                 toggle.textContent =
                     "▼ Profile Picture";
+
+            } else {
+
+                pfpBox.style.display =
+                    "block";
+
+                toggle.textContent =
+                    "▲ Profile Picture";
 
             }
 
@@ -1287,6 +1292,12 @@
                 );
 
 
+            const pfpToggle =
+                document.getElementById(
+                    "pfpToggle"
+                );
+
+
             const postComposer =
                 document.getElementById(
                     "postComposer"
@@ -1341,8 +1352,20 @@
                     logout;
 
 
-                pfpBox.style.display =
+                /* SHOW PROFILE BUTTON */
+
+                pfpToggle.style.display =
                     "block";
+
+
+                /* START COLLAPSED */
+
+                pfpBox.style.display =
+                    "none";
+
+
+                pfpToggle.textContent =
+                    "▼ Profile Picture";
 
 
                 /* ONLY GEEWHIZARD CAN POST */
@@ -1381,6 +1404,14 @@
 
                 pfpBox.style.display =
                     "none";
+
+
+                pfpToggle.style.display =
+                    "none";
+
+
+                pfpToggle.textContent =
+                    "▼ Profile Picture";
 
 
                 postComposer.style.display =
