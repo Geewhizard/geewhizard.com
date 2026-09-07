@@ -10,12 +10,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        /* LOGIN BUTTON */
+        /* =========================
+           LOGIN BUTTON
+           ========================= */
 
         #loginButton {
             position: absolute;
             top: 15px;
             left: 15px;
+
             z-index: 10000;
 
             color: white;
@@ -27,12 +30,16 @@
             text-decoration: underline;
         }
 
-        /* LOGIN BOX */
+
+        /* =========================
+           LOGIN BOX
+           ========================= */
 
         #loginBox {
             display: none;
 
             position: absolute;
+
             top: 50px;
             left: 15px;
 
@@ -45,28 +52,35 @@
 
             border-radius: 15px;
 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.5);
 
             z-index: 10001;
 
             text-align: left;
         }
 
+
         #loginBox input {
             width: 100%;
+
             padding: 8px;
+
             margin-bottom: 10px;
 
             border: 1px solid #aaa;
+
             border-radius: 7px;
 
             box-sizing: border-box;
         }
 
+
         #loginBox button {
             padding: 8px 12px;
 
             border: none;
+
             border-radius: 7px;
 
             cursor: pointer;
@@ -74,53 +88,85 @@
             margin-right: 5px;
         }
 
+
         #loginStatus {
             margin-top: 10px;
+
             font-size: 14px;
         }
 
-        /* LOGGED IN TEXT */
+
+        /* =========================
+           LOGGED IN USER
+           ========================= */
 
         #userDisplay {
             display: none;
 
             position: absolute;
+
             top: 15px;
             left: 15px;
 
             color: white;
 
             font-family: "Comic Sans MS", cursive;
+
             font-size: 18px;
 
             z-index: 10000;
         }
 
+
         #logoutButton {
             color: white;
+
             cursor: pointer;
+
             text-decoration: underline;
+
             margin-left: 5px;
         }
+
     </style>
 </head>
 
+
 <body>
 
-    <!-- LOGIN -->
 
-    <div id="loginButton" onclick="toggleLogin()">
+    <!-- =========================
+         LOGIN
+         ========================= -->
+
+    <div
+        id="loginButton"
+        onclick="toggleLogin()"
+    >
         Login
     </div>
 
+
     <div id="userDisplay">
-        Logged in as <span id="usernameDisplay"></span>
-        <span id="logoutButton" onclick="logout()">Logout</span>
+
+        Logged in as
+
+        <span id="usernameDisplay"></span>
+
+        <span
+            id="logoutButton"
+            onclick="logout()"
+        >
+            Logout
+        </span>
+
     </div>
+
 
     <div id="loginBox">
 
         <h3>Login</h3>
+
 
         <input
             id="username"
@@ -128,26 +174,35 @@
             placeholder="Username"
         >
 
+
         <input
             id="password"
             type="password"
             placeholder="Password"
         >
 
+
         <button onclick="login()">
             Login
         </button>
 
+
         <button onclick="signup()">
             Sign Up
         </button>
+
 
         <div id="loginStatus"></div>
 
     </div>
 
 
+    <!-- =========================
+         MAIN PAGE
+         ========================= -->
+
     <h1>geewhizard.com</h1>
+
 
     <img
         src="whiz menu.png"
@@ -155,10 +210,16 @@
         alt="Whizard Menu"
     >
 
+
     <div id="posts"></div>
 
 
-    <a href="page2.html" class="gif-button">
+    <!-- GIF BUTTON -->
+
+    <a
+        href="page2.html"
+        class="gif-button"
+    >
 
         <img
             src="pE6RRnsQMPPDEBdPNHWQPaLvz3Q.png"
@@ -180,8 +241,13 @@
 
     <script>
 
+        // =========================
+        // SUPABASE
+        // =========================
+
         const SUPABASE_URL =
             "https://mgouzykkbpxjtgdvghoc.supabase.co";
+
 
         const SUPABASE_KEY =
             "sb_publishable_NE4Ah4WBvguxwcD85QSSGg_BxmdF0MP";
@@ -203,11 +269,19 @@
             const box =
                 document.getElementById("loginBox");
 
-            if (box.style.display === "block") {
+
+            if (
+                box.style.display === "block"
+            ) {
+
                 box.style.display = "none";
+
             } else {
+
                 box.style.display = "block";
+
             }
+
         }
 
 
@@ -218,32 +292,44 @@
         async function signup() {
 
             const username =
-                document.getElementById("username").value.trim();
+                document
+                    .getElementById("username")
+                    .value
+                    .trim();
+
 
             const password =
-                document.getElementById("password").value;
+                document
+                    .getElementById("password")
+                    .value;
+
 
             const status =
-                document.getElementById("loginStatus");
+                document.getElementById(
+                    "loginStatus"
+                );
 
 
             if (!username || !password) {
+
                 status.textContent =
                     "Enter a username and password.";
 
                 return;
+
             }
 
 
             if (password.length < 6) {
+
                 status.textContent =
                     "Password must be at least 6 characters.";
 
                 return;
+
             }
 
 
-            // Make an email from the username
             const email =
                 username.toLowerCase() +
                 "@geewhizard.local";
@@ -265,13 +351,15 @@
                     error.message;
 
                 return;
+
             }
 
 
-            // Create username profile
             if (data.user) {
 
-                const { error: profileError } =
+                const {
+                    error: profileError
+                } =
                     await supabaseClient
                         .from("profiles")
                         .insert({
@@ -285,20 +373,26 @@
 
                 if (profileError) {
 
-                    console.error(profileError);
+                    console.error(
+                        profileError
+                    );
 
                     status.textContent =
                         "Account created, but username could not be saved.";
 
                     return;
+
                 }
+
             }
 
 
             status.textContent =
                 "Account created!";
 
+
             updateUserDisplay();
+
         }
 
 
@@ -309,13 +403,22 @@
         async function login() {
 
             const username =
-                document.getElementById("username").value.trim();
+                document
+                    .getElementById("username")
+                    .value
+                    .trim();
+
 
             const password =
-                document.getElementById("password").value;
+                document
+                    .getElementById("password")
+                    .value;
+
 
             const status =
-                document.getElementById("loginStatus");
+                document.getElementById(
+                    "loginStatus"
+                );
 
 
             if (!username || !password) {
@@ -324,6 +427,7 @@
                     "Enter a username and password.";
 
                 return;
+
             }
 
 
@@ -333,13 +437,14 @@
 
 
             const { error } =
-                await supabaseClient.auth.signInWithPassword({
+                await supabaseClient.auth
+                    .signInWithPassword({
 
-                    email: email,
+                        email: email,
 
-                    password: password
+                        password: password
 
-                });
+                    });
 
 
             if (error) {
@@ -348,15 +453,18 @@
                     "Wrong username or password.";
 
                 return;
+
             }
 
 
             status.textContent =
                 "Logged in!";
 
+
             updateUserDisplay();
 
             loadPosts();
+
         }
 
 
@@ -368,12 +476,16 @@
 
             await supabaseClient.auth.signOut();
 
-            document.getElementById("loginBox")
-                .style.display = "none";
+
+            document.getElementById(
+                "loginBox"
+            ).style.display = "none";
+
 
             updateUserDisplay();
 
             loadPosts();
+
         }
 
 
@@ -385,22 +497,32 @@
 
             const {
                 data: { user }
-            } = await supabaseClient.auth.getUser();
+            } =
+                await supabaseClient.auth.getUser();
 
 
             const loginButton =
-                document.getElementById("loginButton");
+                document.getElementById(
+                    "loginButton"
+                );
+
 
             const userDisplay =
-                document.getElementById("userDisplay");
+                document.getElementById(
+                    "userDisplay"
+                );
+
 
             if (!user) {
 
-                loginButton.style.display = "block";
+                loginButton.style.display =
+                    "block";
 
-                userDisplay.style.display = "none";
+                userDisplay.style.display =
+                    "none";
 
                 return;
+
             }
 
 
@@ -418,12 +540,17 @@
                     "usernameDisplay"
                 ).textContent =
                     profile.username;
+
             }
 
 
-            loginButton.style.display = "none";
+            loginButton.style.display =
+                "none";
 
-            userDisplay.style.display = "block";
+
+            userDisplay.style.display =
+                "block";
+
         }
 
 
@@ -434,7 +561,9 @@
         async function loadPosts() {
 
             const postsDiv =
-                document.getElementById("posts");
+                document.getElementById(
+                    "posts"
+                );
 
 
             const { data, error } =
@@ -442,7 +571,9 @@
                     .from("posts")
                     .select("*")
                     .order("created_at", {
+
                         ascending: false
+
                     });
 
 
@@ -454,6 +585,7 @@
                     "Could not load posts.";
 
                 return;
+
             }
 
 
@@ -463,64 +595,101 @@
             data.forEach(post => {
 
                 const postElement =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
+
 
                 postElement.className =
                     "post";
 
 
                 const content =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
+
 
                 content.className =
                     "post-content";
+
 
                 content.textContent =
                     post.content;
 
 
                 const votes =
-                    document.createElement("div");
+                    document.createElement(
+                        "div"
+                    );
+
 
                 votes.className =
                     "votes";
 
 
                 const upvote =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
+
 
                 upvote.textContent =
-                    "⬆ " + (post.upvotes || 0);
+                    "⬆ " +
+                    (post.upvotes || 0);
 
 
                 const downvote =
-                    document.createElement("button");
+                    document.createElement(
+                        "button"
+                    );
+
 
                 downvote.textContent =
-                    "⬇ " + (post.downvotes || 0);
+                    "⬇ " +
+                    (post.downvotes || 0);
 
 
                 upvote.onclick = () =>
-                    vote(post.id, "up");
+                    vote(
+                        post.id,
+                        "up"
+                    );
 
 
                 downvote.onclick = () =>
-                    vote(post.id, "down");
+                    vote(
+                        post.id,
+                        "down"
+                    );
 
 
-                votes.appendChild(upvote);
-
-                votes.appendChild(downvote);
-
-
-                postElement.appendChild(content);
-
-                postElement.appendChild(votes);
+                votes.appendChild(
+                    upvote
+                );
 
 
-                postsDiv.appendChild(postElement);
+                votes.appendChild(
+                    downvote
+                );
+
+
+                postElement.appendChild(
+                    content
+                );
+
+
+                postElement.appendChild(
+                    votes
+                );
+
+
+                postsDiv.appendChild(
+                    postElement
+                );
 
             });
+
         }
 
 
@@ -528,11 +697,16 @@
         // VOTING
         // =========================
 
-        async function vote(postId, voteType) {
+        async function vote(
+            postId,
+            voteType
+        ) {
 
             const {
                 data: { user }
-            } = await supabaseClient.auth.getUser();
+            } =
+                await supabaseClient.auth
+                    .getUser();
 
 
             if (!user) {
@@ -542,10 +716,16 @@
                 );
 
                 return;
+
             }
 
 
-            const { data: existingVote } =
+            // Find existing vote
+
+            const {
+                data: existingVote,
+                error: findError
+            } =
                 await supabaseClient
                     .from("post_votes")
                     .select("*")
@@ -554,108 +734,181 @@
                     .maybeSingle();
 
 
-            if (existingVote) {
+            if (findError) {
 
-                if (
-                    existingVote.vote_type ===
-                    voteType
-                ) {
+                console.error(findError);
 
+                return;
+
+            }
+
+
+            // =========================
+            // REMOVE SAME VOTE
+            // =========================
+
+            if (
+                existingVote &&
+                existingVote.vote_type ===
+                voteType
+            ) {
+
+                const { error } =
                     await supabaseClient
                         .from("post_votes")
                         .delete()
-                        .eq("id", existingVote.id);
+                        .eq(
+                            "id",
+                            existingVote.id
+                        );
 
 
-                    const column =
-                        voteType === "up"
-                            ? "upvotes"
-                            : "downvotes";
+                if (error) {
 
+                    console.error(error);
 
-                    const { data: post } =
-                        await supabaseClient
-                            .from("posts")
-                            .select("upvotes, downvotes")
-                            .eq("id", postId)
-                            .single();
+                    return;
 
-
-                    await supabaseClient
-                        .from("posts")
-                        .update({
-
-                            [column]:
-                                Math.max(
-                                    0,
-                                    (post[column] || 0) - 1
-                                )
-
-                        })
-                        .eq("id", postId);
-
-
-                } else {
-
-                    const oldColumn =
-                        existingVote.vote_type === "up"
-                            ? "upvotes"
-                            : "downvotes";
-
-
-                    const newColumn =
-                        voteType === "up"
-                            ? "upvotes"
-                            : "downvotes";
-
-
-                    await supabaseClient
-                        .from("post_votes")
-                        .update({
-
-                            vote_type: voteType
-
-                        })
-                        .eq("id", existingVote.id);
-
-
-                    const { data: post } =
-                        await supabaseClient
-                            .from("posts")
-                            .select("upvotes, downvotes")
-                            .eq("id", postId)
-                            .single();
-
-
-                    await supabaseClient
-                        .from("posts")
-                        .update({
-
-                            upvotes:
-                                Math.max(
-                                    0,
-                                    (post.upvotes || 0) +
-                                    (newColumn === "upvotes"
-                                        ? 1
-                                        : -1)
-                                ),
-
-                            downvotes:
-                                Math.max(
-                                    0,
-                                    (post.downvotes || 0) +
-                                    (newColumn === "downvotes"
-                                        ? 1
-                                        : -1)
-                                )
-
-                        })
-                        .eq("id", postId);
                 }
 
 
-            } else {
+                const column =
+                    voteType === "up"
+                        ? "upvotes"
+                        : "downvotes";
 
+
+                const { data: post } =
+                    await supabaseClient
+                        .from("posts")
+                        .select(
+                            "upvotes, downvotes"
+                        )
+                        .eq(
+                            "id",
+                            postId
+                        )
+                        .single();
+
+
+                await supabaseClient
+                    .from("posts")
+                    .update({
+
+                        [column]:
+                            Math.max(
+                                0,
+                                (post[column] || 0) - 1
+                            )
+
+                    })
+                    .eq(
+                        "id",
+                        postId
+                    );
+
+
+                loadPosts();
+
+                return;
+
+            }
+
+
+            // =========================
+            // CHANGE VOTE
+            // =========================
+
+            if (existingVote) {
+
+                const oldColumn =
+                    existingVote.vote_type === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+
+                const newColumn =
+                    voteType === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+
+                await supabaseClient
+                    .from("post_votes")
+                    .update({
+
+                        vote_type:
+                            voteType
+
+                    })
+                    .eq(
+                        "id",
+                        existingVote.id
+                    );
+
+
+                const { data: post } =
+                    await supabaseClient
+                        .from("posts")
+                        .select(
+                            "upvotes, downvotes"
+                        )
+                        .eq(
+                            "id",
+                            postId
+                        )
+                        .single();
+
+
+                await supabaseClient
+                    .from("posts")
+                    .update({
+
+                        upvotes:
+                            Math.max(
+                                0,
+                                (post.upvotes || 0) +
+                                (
+                                    newColumn ===
+                                    "upvotes"
+                                    ? 1
+                                    : -1
+                                )
+                            ),
+
+                        downvotes:
+                            Math.max(
+                                0,
+                                (post.downvotes || 0) +
+                                (
+                                    newColumn ===
+                                    "downvotes"
+                                    ? 1
+                                    : -1
+                                )
+                            )
+
+                    })
+                    .eq(
+                        "id",
+                        postId
+                    );
+
+
+                loadPosts();
+
+                return;
+
+            }
+
+
+            // =========================
+            // FIRST VOTE
+            // =========================
+
+            const {
+                error: insertError
+            } =
                 await supabaseClient
                     .from("post_votes")
                     .insert({
@@ -669,34 +922,92 @@
                     });
 
 
-                const column =
-                    voteType === "up"
-                        ? "upvotes"
-                        : "downvotes";
+            if (insertError) {
 
+                console.error(
+                    insertError
+                );
 
-                const { data: post } =
-                    await supabaseClient
-                        .from("posts")
-                        .select(column)
-                        .eq("id", postId)
-                        .single();
+                return;
 
-
-                await supabaseClient
-                    .from("posts")
-                    .update({
-
-                        [column]:
-                            (post[column] || 0) + 1
-
-                    })
-                    .eq("id", postId);
             }
 
 
+            const column =
+                voteType === "up"
+                    ? "upvotes"
+                    : "downvotes";
+
+
+            const { data: post } =
+                await supabaseClient
+                    .from("posts")
+                    .select(column)
+                    .eq(
+                        "id",
+                        postId
+                    )
+                    .single();
+
+
+            await supabaseClient
+                .from("posts")
+                .update({
+
+                    [column]:
+                        (post[column] || 0) + 1
+
+                })
+                .eq(
+                    "id",
+                    postId
+                );
+
+
             loadPosts();
+
         }
+
+
+        // =========================
+        // CLOSE LOGIN WHEN CLICKING OUTSIDE
+        // =========================
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const loginBox =
+                    document.getElementById(
+                        "loginBox"
+                    );
+
+
+                const loginButton =
+                    document.getElementById(
+                        "loginButton"
+                    );
+
+
+                if (
+                    loginBox.style.display ===
+                    "block" &&
+
+                    !loginBox.contains(
+                        event.target
+                    ) &&
+
+                    event.target !==
+                    loginButton
+                ) {
+
+                    loginBox.style.display =
+                        "none";
+
+                }
+
+            }
+        );
 
 
         // =========================
