@@ -1,587 +1,570 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>geepoopzard</title>
 
-    <title>geewhizard.com</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="style.css">
 
-    <link rel="icon" type="image/png" href="whizardpfp.png">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            min-height: 100vh;
-            font-family: "Comic Sans MS", "Comic Sans", cursive;
-            background-image: url("background.png");
-            background-repeat: repeat;
-            background-size: 500px;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 25px;
-            font-size: 50px;
-            text-shadow: 3px 3px 0 black;
-        }
 
         /* =========================
-           LOGIN
-        ========================= */
+           LOGIN BUTTON
+           ========================= */
 
         #loginButton {
-            position: fixed;
+            position: absolute;
             top: 15px;
             left: 15px;
-            z-index: 1000;
+            z-index: 10000;
 
-            padding: 10px 18px;
-            border-radius: 20px;
-            border: 2px solid white;
-
-            background: #222;
             color: white;
-
-            font-family: inherit;
-            font-size: 16px;
             cursor: pointer;
+
+            font-family: "Comic Sans MS", cursive;
+            font-size: 18px;
+
+            text-decoration: underline;
         }
 
-        #loginButton:hover {
-            background: #444;
-        }
 
-        #loginBox,
-        #pfpBox {
-            position: fixed;
-            top: 65px;
+        /* =========================
+           LOGIN BOX
+           ========================= */
+
+        #loginBox {
+            display: none;
+
+            position: absolute;
+            top: 50px;
             left: 15px;
-            z-index: 1000;
 
-            width: 280px;
+            width: 250px;
+
             padding: 20px;
 
-            background: rgba(20, 20, 20, 0.97);
-            border: 2px solid white;
+            background: white;
+            color: black;
+
             border-radius: 15px;
 
-            box-shadow: 0 5px 25px black;
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.5);
+
+            z-index: 10001;
+
+            text-align: left;
         }
+
 
         #loginBox input {
             width: 100%;
-            padding: 10px;
+            padding: 8px;
             margin-bottom: 10px;
 
-            border-radius: 8px;
             border: 1px solid #aaa;
+            border-radius: 7px;
 
-            font-family: inherit;
+            box-sizing: border-box;
         }
 
-        #loginBox button,
-        #pfpBox button {
+
+        #loginBox button {
             padding: 8px 12px;
-            margin: 3px;
 
             border: none;
-            border-radius: 8px;
+            border-radius: 7px;
 
-            background: #555;
-            color: white;
-
-            font-family: inherit;
             cursor: pointer;
+
+            margin-right: 5px;
         }
 
-        #loginBox button:hover,
-        #pfpBox button:hover {
-            background: #777;
-        }
 
-        #loginMessage {
+        #loginStatus {
             margin-top: 10px;
             font-size: 14px;
         }
 
+
         /* =========================
            USER DISPLAY
-        ========================= */
+           ========================= */
 
         #userDisplay {
-            position: fixed;
-            top: 15px;
-            left: 15px;
-            z-index: 999;
+            display: none;
 
-            display: flex;
+            position: absolute;
+
+            top: 10px;
+            left: 15px;
+
+            color: white;
+
+            font-family: "Comic Sans MS", cursive;
+            font-size: 18px;
+
+            z-index: 10000;
+
             align-items: center;
             gap: 8px;
-
-            padding: 6px 10px;
-
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid white;
-            border-radius: 25px;
-
-            box-shadow: 0 3px 15px black;
         }
+
+
+        /* PROFILE PICTURE */
 
         #userPfp {
             width: 40px;
             height: 40px;
 
-            border-radius: 50%;
             object-fit: cover;
 
+            border-radius: 50%;
+
+            display: none;
+
             border: 2px solid white;
+
+            vertical-align: middle;
         }
 
-        #userInfo {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
 
-        #usernameDisplay {
-            font-size: 14px;
-        }
-
-        #userDisplay button {
-            border: none;
-            border-radius: 7px;
-
-            padding: 4px 7px;
-
-            background: #444;
+        #logoutButton {
             color: white;
 
-            font-family: inherit;
             cursor: pointer;
+
+            text-decoration: underline;
+
+            margin-left: 5px;
         }
 
-        #userDisplay button:hover {
-            background: #666;
-        }
 
         /* =========================
            PFP UPLOAD
-        ========================= */
+           ========================= */
 
         #pfpBox {
             display: none;
+
+            position: absolute;
+
+            top: 60px;
+            left: 15px;
+
+            width: 250px;
+
+            padding: 15px;
+
+            background: white;
+            color: black;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.5);
+
+            z-index: 10001;
         }
+
 
         #pfpBox input {
             width: 100%;
+
+            box-sizing: border-box;
+
             margin-bottom: 10px;
         }
 
-        /* =========================
-           WHIZARD MENU
-        ========================= */
 
-        .whiz-menu {
-            display: block;
-            max-width: 300px;
-            width: 70%;
-            height: auto;
-
-            margin: 20px auto;
-        }
-
-        /* =========================
-           POSTS
-        ========================= */
-
-        #posts {
-            width: min(800px, 94%);
-            margin: 30px auto;
-        }
-
-        .post {
-            background: rgba(0, 0, 0, 0.88);
-
-            border: 2px solid white;
-            border-radius: 18px;
-
-            padding: 18px;
-            margin-bottom: 25px;
-
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.7);
-        }
-
-        /* Main post author */
-
-        .post-author {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-
-            margin-bottom: 12px;
-        }
-
-        .post-author-pfp {
-            width: 48px;
-            height: 48px;
-
-            border-radius: 50%;
-            object-fit: cover;
-
-            border: 2px solid white;
-        }
-
-        .main-author-name {
-            color: #2588ff;
-            font-size: 19px;
-            font-weight: bold;
-
-            text-shadow: 1px 1px 2px black;
-        }
-
-        .post-date {
-            display: block;
-            font-size: 12px;
-            color: #aaa;
-        }
-
-        .post-content {
-            font-size: 20px;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-
-            margin: 15px 0;
-        }
-
-        /* =========================
-           VOTING
-        ========================= */
-
-        .vote-buttons {
-            display: flex;
-            gap: 8px;
-
-            margin-bottom: 15px;
-        }
-
-        .vote-buttons button {
-            padding: 7px 12px;
+        #pfpBox button {
+            padding: 8px 12px;
 
             border: none;
-            border-radius: 10px;
 
-            background: #333;
-            color: white;
+            border-radius: 7px;
 
-            font-family: inherit;
             cursor: pointer;
         }
 
-        .vote-buttons button:hover {
-            background: #555;
+
+        #pfpStatus {
+            margin-top: 8px;
+
+            font-size: 14px;
         }
+
 
         /* =========================
-           REPLIES
-        ========================= */
+           CHANGE PFP BUTTON
+           ========================= */
 
-        .replies {
-            margin-top: 15px;
-            padding-top: 12px;
+        #changePfpButton {
+            color: white;
 
-            border-top: 1px solid #555;
+            cursor: pointer;
+
+            text-decoration: underline;
+
+            margin-left: 5px;
         }
 
-        .replies-title {
-            font-size: 17px;
+
+        /* =========================
+           MAIN POST AUTHOR
+           ========================= */
+
+        .main-post-author {
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
             margin-bottom: 10px;
         }
 
-        .reply {
-            display: flex;
-            gap: 9px;
 
-            margin: 10px 0;
-            padding: 9px;
+        .main-post-pfp {
+            width: 45px;
+            height: 45px;
 
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-        }
-
-        .reply-pfp {
-            width: 34px;
-            height: 34px;
-
-            border-radius: 50%;
             object-fit: cover;
 
+            border-radius: 50%;
+
+            border: 2px solid white;
+        }
+
+
+        .main-post-name {
+            color: #2588ff;
+
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
+            font-size: 20px;
+
+            font-weight: bold;
+        }
+
+
+        .main-post-date {
+            color: #aaa;
+
+            font-size: 12px;
+
+            display: block;
+        }
+
+
+        /* =========================
+           REPLIES
+           ========================= */
+
+        .replies-container {
+            margin-top: 15px;
+
+            padding-top: 12px;
+
+            border-top: 1px solid rgba(255,255,255,0.3);
+        }
+
+
+        .replies-title {
+            color: white;
+
+            font-size: 18px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .reply {
+            display: flex;
+
+            align-items: flex-start;
+
+            gap: 8px;
+
+            margin-top: 10px;
+
+            padding: 8px;
+
+            border-radius: 10px;
+
+            background: rgba(0,0,0,0.25);
+        }
+
+
+        .reply-pfp {
+            width: 35px;
+            height: 35px;
+
+            min-width: 35px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
             border: 1px solid white;
-
-            flex-shrink: 0;
         }
 
-        .reply-body {
-            min-width: 0;
+
+        .reply-content-area {
             flex: 1;
+
+            min-width: 0;
         }
+
 
         .reply-header {
             display: flex;
+
             align-items: center;
+
             gap: 7px;
 
-            margin-bottom: 3px;
+            flex-wrap: wrap;
         }
+
 
         .reply-username {
-            font-weight: bold;
             color: #58a6ff;
+
+            font-weight: bold;
+
+            font-size: 15px;
         }
 
+
         .reply-date {
-            color: #888;
+            color: #999;
+
             font-size: 11px;
         }
 
-        .reply-content {
+
+        .reply-text {
+            color: white;
+
+            margin-top: 3px;
+
             white-space: pre-wrap;
+
             word-wrap: break-word;
 
             font-size: 15px;
         }
 
+
+        /* =========================
+           DELETE REPLY
+           ========================= */
+
         .delete-reply {
             margin-left: auto;
 
-            padding: 3px 7px;
+            padding: 3px 8px;
 
             border: none;
+
             border-radius: 6px;
 
-            background: #8b0000;
+            background: #b00000;
+
             color: white;
 
-            font-family: inherit;
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
             cursor: pointer;
         }
 
+
         .delete-reply:hover {
-            background: #c00000;
+            background: #e00000;
         }
 
+
         /* =========================
-           REPLY FORM
-        ========================= */
+           REPLY INPUT
+           ========================= */
 
         .reply-form {
             display: flex;
+
             gap: 7px;
 
             margin-top: 12px;
         }
+
 
         .reply-input {
             flex: 1;
 
             min-width: 0;
 
-            padding: 9px 12px;
+            padding: 8px 10px;
 
-            border: 1px solid #777;
-            border-radius: 10px;
+            border: 1px solid #aaa;
 
-            background: #111;
-            color: white;
+            border-radius: 8px;
 
-            font-family: inherit;
-            outline: none;
+            font-family:
+                "Comic Sans MS",
+                cursive;
         }
 
-        .reply-input:focus {
-            border-color: #2588ff;
-        }
 
-        .reply-submit {
-            padding: 8px 13px;
+        .reply-button {
+            padding: 8px 12px;
 
             border: none;
-            border-radius: 10px;
+
+            border-radius: 8px;
 
             background: #2588ff;
+
             color: white;
 
-            font-family: inherit;
+            font-family:
+                "Comic Sans MS",
+                cursive;
+
             cursor: pointer;
         }
 
-        .reply-submit:hover {
+
+        .reply-button:hover {
             background: #1475e8;
         }
 
-        /* =========================
-           GIF BUTTON
-        ========================= */
 
-        .gif-button {
-            display: block;
+        .login-to-reply {
+            color: #aaa;
 
-            width: 180px;
-            height: 120px;
+            margin-top: 10px;
 
-            margin: 40px auto;
-
-            overflow: hidden;
-
-            border-radius: 50%;
-
-            transition: 0.3s ease;
-
-            text-decoration: none;
+            font-size: 14px;
         }
 
-        .gif-button img {
-            width: 100%;
-            height: 100%;
-
-            object-fit: cover;
-        }
-
-        .gif-button .animated {
-            display: none;
-        }
-
-        .gif-button:hover {
-            width: 230px;
-            height: 150px;
-        }
-
-        .gif-button:hover .still {
-            display: none;
-        }
-
-        .gif-button:hover .animated {
-            display: block;
-        }
-
-        /* =========================
-           MOBILE
-        ========================= */
-
-        @media (max-width: 600px) {
-
-            h1 {
-                font-size: 35px;
-                margin-top: 80px;
-            }
-
-            #userDisplay {
-                max-width: calc(100% - 30px);
-            }
-
-            .post-content {
-                font-size: 17px;
-            }
-
-            .reply-form {
-                flex-direction: column;
-            }
-
-            .reply-submit {
-                width: 100%;
-            }
-        }
     </style>
+
 </head>
+
 
 <body>
 
-    <!-- =========================
-         LOGIN BUTTON
-    ========================= -->
 
-    <button id="loginButton" onclick="toggleLogin(event)">
+    <!-- =========================
+         LOGIN
+         ========================= -->
+
+    <div
+        id="loginButton"
+        onclick="toggleLogin(event)"
+    >
         Login
-    </button>
-
-
-    <!-- =========================
-         LOGIN BOX
-    ========================= -->
-
-    <div id="loginBox" style="display:none;" onclick="event.stopPropagation()">
-
-        <h3>Login</h3>
-
-        <input
-            type="text"
-            id="username"
-            placeholder="Username"
-            autocomplete="username"
-        >
-
-        <input
-            type="password"
-            id="password"
-            placeholder="Password"
-            autocomplete="current-password"
-        >
-
-        <button onclick="login()">Login</button>
-        <button onclick="signup()">Sign Up</button>
-
-        <div id="loginMessage"></div>
-
     </div>
 
 
     <!-- =========================
          USER DISPLAY
-    ========================= -->
+         ========================= -->
 
-    <div id="userDisplay" style="display:none;" onclick="event.stopPropagation()">
+    <div id="userDisplay">
 
         <img
             id="userPfp"
-            src="whizardpfp.png"
+            src=""
             alt="Profile Picture"
         >
 
-        <div id="userInfo">
+        <span>
+            Logged in as
+            <span id="usernameDisplay"></span>
+        </span>
 
-            <div id="usernameDisplay"></div>
+        <span
+            id="changePfpButton"
+            onclick="togglePfpBox(event)"
+        >
+            Change PFP
+        </span>
 
-            <div>
-                <button onclick="togglePfpBox(event)">
-                    Change PFP
-                </button>
+        <span
+            id="logoutButton"
+            onclick="logout(event)"
+        >
+            Logout
+        </span>
 
-                <button onclick="logout()">
-                    Logout
-                </button>
-            </div>
+    </div>
 
-        </div>
+
+    <!-- =========================
+         LOGIN BOX
+         ========================= -->
+
+    <div
+        id="loginBox"
+        onclick="event.stopPropagation()"
+    >
+
+        <h3>Login</h3>
+
+
+        <input
+            id="username"
+            type="text"
+            placeholder="Username"
+        >
+
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+        >
+
+
+        <button onclick="login()">
+            Login
+        </button>
+
+
+        <button onclick="signup()">
+            Sign Up
+        </button>
+
+
+        <div id="loginStatus"></div>
 
     </div>
 
 
     <!-- =========================
          PFP BOX
-    ========================= -->
+         ========================= -->
 
-    <div id="pfpBox" onclick="event.stopPropagation()">
+    <div
+        id="pfpBox"
+        onclick="event.stopPropagation()"
+    >
 
-        <h3>Change Profile Picture</h3>
+        <strong>Change Profile Picture</strong>
+
+        <br><br>
 
         <input
-            type="file"
             id="pfpInput"
+            type="file"
             accept="image/*"
         >
 
@@ -589,20 +572,17 @@
             Upload
         </button>
 
-        <button onclick="togglePfpBox(event)">
-            Cancel
-        </button>
-
-        <div id="pfpMessage"></div>
+        <div id="pfpStatus"></div>
 
     </div>
 
 
     <!-- =========================
-         PAGE
-    ========================= -->
+         MAIN PAGE
+         ========================= -->
 
     <h1>geewhizard.com</h1>
+
 
     <img
         src="whiz menu.png"
@@ -611,18 +591,17 @@
     >
 
 
-    <!-- =========================
-         POSTS
-    ========================= -->
-
     <div id="posts"></div>
 
 
     <!-- =========================
          GIF BUTTON
-    ========================= -->
+         ========================= -->
 
-    <a href="page2.html" class="gif-button">
+    <a
+        href="page2.html"
+        class="gif-button"
+    >
 
         <img
             src="pE6RRnsQMPPDEBdPNHWQPaLvz3Q.png"
@@ -639,27 +618,22 @@
     </a>
 
 
-    <!-- =========================
-         SUPABASE
-    ========================= -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <!-- Your existing external JS -->
     <script src="script.js"></script>
 
 
     <script>
 
-        /* =====================================================
-           SUPABASE
-        ===================================================== */
+        // =========================
+        // SUPABASE
+        // =========================
 
         const SUPABASE_URL =
             "https://mgouzykkbpxjtgdvghoc.supabase.co";
 
+
         const SUPABASE_KEY =
             "sb_publishable_NE4Ah4WBvguxwcD85QSSGg_BxmdF0MP";
+
 
         const supabaseClient =
             window.supabase.createClient(
@@ -668,18 +642,22 @@
             );
 
 
-        /* =====================================================
-           YOUR ACCOUNT
-           ONLY THIS ACCOUNT CAN DELETE REPLIES
-        ===================================================== */
+        // =========================
+        // YOUR ACCOUNT
+        // ONLY THIS ACCOUNT CAN
+        // DELETE REPLIES
+        // =========================
 
         const OWNER_ID =
             "ee944573-14bb-42f7-9cbb-44e28c9d39bd";
 
 
-        /* =====================================================
-           LOGIN UI
-        ===================================================== */
+        let currentUserId = null;
+
+
+        // =========================
+        // LOGIN BOX
+        // =========================
 
         function toggleLogin(event) {
 
@@ -688,108 +666,71 @@
             }
 
             const box =
-                document.getElementById("loginBox");
+                document.getElementById(
+                    "loginBox"
+                );
 
             const pfpBox =
-                document.getElementById("pfpBox");
-
-            pfpBox.style.display = "none";
-
-            box.style.display =
-                box.style.display === "none"
-                    ? "block"
-                    : "none";
-        }
+                document.getElementById(
+                    "pfpBox"
+                );
 
 
-        function togglePfpBox(event) {
-
-            if (event) {
-                event.stopPropagation();
-            }
-
-            const box =
-                document.getElementById("pfpBox");
-
-            box.style.display =
-                box.style.display === "none"
-                    ? "block"
-                    : "none";
-        }
-
-
-        /* =====================================================
-           CLICK OUTSIDE TO CLOSE MENUS
-        ===================================================== */
-
-        document.addEventListener("click", function(event) {
-
-            const loginBox =
-                document.getElementById("loginBox");
-
-            const pfpBox =
-                document.getElementById("pfpBox");
-
-            const loginButton =
-                document.getElementById("loginButton");
-
-            const userDisplay =
-                document.getElementById("userDisplay");
+            pfpBox.style.display =
+                "none";
 
 
             if (
-                !loginBox.contains(event.target) &&
-                event.target !== loginButton
+                box.style.display ===
+                "block"
             ) {
-                loginBox.style.display = "none";
+
+                box.style.display =
+                    "none";
+
+            } else {
+
+                box.style.display =
+                    "block";
+
             }
 
-
-            if (
-                !pfpBox.contains(event.target) &&
-                !userDisplay.contains(event.target)
-            ) {
-                pfpBox.style.display = "none";
-            }
-
-        });
+        }
 
 
-        /* =====================================================
-           SIGN UP
-        ===================================================== */
+        // =========================
+        // SIGN UP
+        // =========================
 
         async function signup() {
 
             const username =
                 document
-                    .getElementById("username")
+                    .getElementById(
+                        "username"
+                    )
                     .value
                     .trim();
 
+
             const password =
                 document
-                    .getElementById("password")
+                    .getElementById(
+                        "password"
+                    )
                     .value;
 
 
-            const message =
-                document.getElementById("loginMessage");
+            const status =
+                document.getElementById(
+                    "loginStatus"
+                );
 
 
             if (!username || !password) {
 
-                message.textContent =
+                status.textContent =
                     "Enter a username and password.";
-
-                return;
-            }
-
-
-            if (username.length < 3) {
-
-                message.textContent =
-                    "Username must be at least 3 characters.";
 
                 return;
             }
@@ -797,14 +738,14 @@
 
             if (password.length < 6) {
 
-                message.textContent =
+                status.textContent =
                     "Password must be at least 6 characters.";
 
                 return;
             }
 
 
-            const fakeEmail =
+            const email =
                 username.toLowerCase() +
                 "@geewhizard.local";
 
@@ -812,128 +753,145 @@
             const {
                 data,
                 error
-            } = await supabaseClient.auth.signUp({
+            } =
+                await supabaseClient.auth.signUp({
 
-                email: fakeEmail,
+                    email: email,
 
-                password: password
+                    password: password
 
-            });
+                });
 
 
             if (error) {
 
-                message.textContent =
+                status.textContent =
                     error.message;
 
                 return;
             }
 
 
-            if (!data.user) {
+            if (data.user) {
 
-                message.textContent =
-                    "Something went wrong.";
+                const {
+                    error: profileError
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .insert({
 
-                return;
+                            id:
+                                data.user.id,
+
+                            username:
+                                username,
+
+                            avatar_url:
+                                null
+
+                        });
+
+
+                if (profileError) {
+
+                    console.error(
+                        profileError
+                    );
+
+                    status.textContent =
+                        "Account created, but username could not be saved.";
+
+                    return;
+                }
+
             }
 
 
-            const {
-                error: profileError
-            } = await supabaseClient
-                .from("profiles")
-                .insert({
-
-                    id: data.user.id,
-
-                    username: username,
-
-                    avatar_url: null
-
-                });
-
-
-            if (profileError) {
-
-                message.textContent =
-                    "Account created, but profile setup failed: " +
-                    profileError.message;
-
-                return;
-            }
-
-
-            message.textContent =
+            status.textContent =
                 "Account created!";
 
-            await updateUserDisplay();
+
+            updateUserDisplay();
 
         }
 
 
-        /* =====================================================
-           LOGIN
-        ===================================================== */
+        // =========================
+        // LOGIN
+        // =========================
 
         async function login() {
 
             const username =
                 document
-                    .getElementById("username")
+                    .getElementById(
+                        "username"
+                    )
                     .value
                     .trim();
 
+
             const password =
                 document
-                    .getElementById("password")
+                    .getElementById(
+                        "password"
+                    )
                     .value;
 
 
-            const message =
-                document.getElementById("loginMessage");
+            const status =
+                document.getElementById(
+                    "loginStatus"
+                );
 
 
             if (!username || !password) {
 
-                message.textContent =
-                    "Enter your username and password.";
+                status.textContent =
+                    "Enter a username and password.";
 
                 return;
             }
 
 
-            const fakeEmail =
+            const email =
                 username.toLowerCase() +
                 "@geewhizard.local";
 
 
             const {
                 error
-            } = await supabaseClient.auth.signInWithPassword({
+            } =
+                await supabaseClient.auth
+                    .signInWithPassword({
 
-                email: fakeEmail,
+                        email:
+                            email,
 
-                password: password
+                        password:
+                            password
 
-            });
+                    });
 
 
             if (error) {
 
-                message.textContent =
-                    error.message;
+                status.textContent =
+                    "Wrong username or password.";
 
                 return;
             }
 
 
-            message.textContent =
+            status.textContent =
                 "Logged in!";
 
 
-            document.getElementById("loginBox")
-                .style.display = "none";
+            document.getElementById(
+                "loginBox"
+            ).style.display =
+                "none";
 
 
             await updateUserDisplay();
@@ -943,201 +901,233 @@
         }
 
 
-        /* =====================================================
-           LOGOUT
-        ===================================================== */
+        // =========================
+        // LOGOUT
+        // =========================
 
-        async function logout() {
+        async function logout(event) {
 
-            await supabaseClient.auth.signOut();
+            if (event) {
+                event.stopPropagation();
+            }
 
-            document.getElementById("userDisplay")
-                .style.display = "none";
 
-            document.getElementById("loginButton")
-                .style.display = "block";
+            await supabaseClient.auth
+                .signOut();
 
-            document.getElementById("pfpBox")
-                .style.display = "none";
+
+            document.getElementById(
+                "loginBox"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "pfpBox"
+            ).style.display =
+                "none";
+
+
+            currentUserId =
+                null;
+
+
+            await updateUserDisplay();
 
             await loadPosts();
 
         }
 
 
-        /* =====================================================
-           UPDATE USER DISPLAY
-        ===================================================== */
+        // =========================
+        // PFP BOX
+        // =========================
 
-        async function updateUserDisplay() {
+        function togglePfpBox(event) {
 
-            const {
-                data: {
-                    user
-                }
-            } = await supabaseClient.auth.getUser();
-
-
-            if (!user) {
-
-                document.getElementById("userDisplay")
-                    .style.display = "none";
-
-                document.getElementById("loginButton")
-                    .style.display = "block";
-
-                return;
+            if (event) {
+                event.stopPropagation();
             }
 
 
-            const {
-                data: profile
-            } = await supabaseClient
-                .from("profiles")
-                .select("username, avatar_url")
-                .eq("id", user.id)
-                .single();
+            const box =
+                document.getElementById(
+                    "pfpBox"
+                );
 
 
-            document.getElementById("loginButton")
-                .style.display = "none";
+            document.getElementById(
+                "loginBox"
+            ).style.display =
+                "none";
 
 
-            document.getElementById("userDisplay")
-                .style.display = "flex";
+            if (
+                box.style.display ===
+                "block"
+            ) {
 
+                box.style.display =
+                    "none";
 
-            document.getElementById("usernameDisplay")
-                .textContent =
-                    "Logged in as " +
-                    (profile?.username || "User");
+            } else {
 
+                box.style.display =
+                    "block";
 
-            document.getElementById("userPfp")
-                .src =
-                    profile?.avatar_url ||
-                    "whizardpfp.png";
+            }
 
         }
 
 
-        /* =====================================================
-           IMAGE PROCESSING
-           MAKES PFP SQUARE
-        ===================================================== */
+        // =========================
+        // RESIZE + COMPRESS IMAGE
+        // =========================
 
         function processImage(file) {
 
-            return new Promise((resolve, reject) => {
+            return new Promise(
+                (resolve, reject) => {
 
-                const reader =
-                    new FileReader();
-
-
-                reader.onload = function(event) {
-
-                    const img =
+                    const image =
                         new Image();
 
 
-                    img.onload = function() {
+                    image.onload =
+                        function() {
 
-                        const size =
-                            Math.min(
-                                img.width,
-                                img.height
+                            const size =
+                                Math.min(
+                                    image.width,
+                                    image.height
+                                );
+
+
+                            const canvas =
+                                document.createElement(
+                                    "canvas"
+                                );
+
+
+                            const outputSize =
+                                256;
+
+
+                            canvas.width =
+                                outputSize;
+
+
+                            canvas.height =
+                                outputSize;
+
+
+                            const ctx =
+                                canvas.getContext(
+                                    "2d"
+                                );
+
+
+                            const cropX =
+                                (
+                                    image.width -
+                                    size
+                                ) / 2;
+
+
+                            const cropY =
+                                (
+                                    image.height -
+                                    size
+                                ) / 2;
+
+
+                            ctx.drawImage(
+
+                                image,
+
+                                cropX,
+                                cropY,
+
+                                size,
+                                size,
+
+                                0,
+                                0,
+
+                                outputSize,
+                                outputSize
+
                             );
 
 
-                        const sx =
-                            (img.width - size) / 2;
+                            canvas.toBlob(
 
-                        const sy =
-                            (img.height - size) / 2;
+                                function(blob) {
 
+                                    if (!blob) {
 
-                        const canvas =
-                            document.createElement("canvas");
+                                        reject(
+                                            new Error(
+                                                "Could not compress image."
+                                            )
+                                        );
 
-
-                        canvas.width = 256;
-                        canvas.height = 256;
-
-
-                        const ctx =
-                            canvas.getContext("2d");
+                                        return;
+                                    }
 
 
-                        ctx.drawImage(
-                            img,
-                            sx,
-                            sy,
-                            size,
-                            size,
-                            0,
-                            0,
-                            256,
-                            256
+                                    resolve(blob);
+
+                                },
+
+                                "image/jpeg",
+
+                                0.75
+
+                            );
+
+                        };
+
+
+                    image.onerror =
+                        function() {
+
+                            reject(
+                                new Error(
+                                    "Could not read image."
+                                )
+                            );
+
+                        };
+
+
+                    image.src =
+                        URL.createObjectURL(
+                            file
                         );
 
-
-                        canvas.toBlob(
-                            blob => {
-
-                                if (!blob) {
-
-                                    reject(
-                                        new Error(
-                                            "Could not process image."
-                                        )
-                                    );
-
-                                    return;
-                                }
-
-
-                                resolve(blob);
-
-                            },
-                            "image/jpeg",
-                            0.75
-                        );
-
-                    };
-
-
-                    img.onerror =
-                        reject;
-
-
-                    img.src =
-                        event.target.result;
-
-                };
-
-
-                reader.onerror =
-                    reject;
-
-
-                reader.readAsDataURL(file);
-
-            });
+                }
+            );
 
         }
 
 
-        /* =====================================================
-           UPLOAD PFP
-        ===================================================== */
+        // =========================
+        // UPLOAD PFP
+        // =========================
 
         async function uploadPfp() {
 
             const input =
-                document.getElementById("pfpInput");
+                document.getElementById(
+                    "pfpInput"
+                );
 
-            const message =
-                document.getElementById("pfpMessage");
+
+            const status =
+                document.getElementById(
+                    "pfpStatus"
+                );
 
 
             const file =
@@ -1146,7 +1136,7 @@
 
             if (!file) {
 
-                message.textContent =
+                status.textContent =
                     "Choose an image first.";
 
                 return;
@@ -1157,57 +1147,73 @@
                 data: {
                     user
                 }
-            } = await supabaseClient.auth.getUser();
+            } =
+                await supabaseClient.auth
+                    .getUser();
 
 
             if (!user) {
 
-                message.textContent =
+                status.textContent =
                     "You need to be logged in.";
 
                 return;
             }
 
 
+            status.textContent =
+                "Processing image...";
+
+
             try {
 
-                message.textContent =
-                    "Processing image...";
+                const compressedImage =
+                    await processImage(
+                        file
+                    );
 
 
-                const processed =
-                    await processImage(file);
+                status.textContent =
+                    "Uploading...";
 
 
-                const path =
+                const filePath =
                     user.id +
                     "/avatar.jpg";
 
 
-                message.textContent =
-                    "Uploading...";
-
-
                 const {
                     error: uploadError
-                } = await supabaseClient
-                    .storage
-                    .from("avatars")
-                    .upload(
-                        path,
-                        processed,
-                        {
-                            contentType:
-                                "image/jpeg",
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("avatars")
+                        .upload(
 
-                            upsert: true
-                        }
-                    );
+                            filePath,
+
+                            compressedImage,
+
+                            {
+
+                                contentType:
+                                    "image/jpeg",
+
+                                upsert:
+                                    true
+
+                            }
+
+                        );
 
 
                 if (uploadError) {
 
-                    message.textContent =
+                    console.error(
+                        uploadError
+                    );
+
+                    status.textContent =
                         "Upload failed: " +
                         uploadError.message;
 
@@ -1216,52 +1222,67 @@
 
 
                 const {
-                    data: publicData
+                    data: publicUrlData
                 } =
                     supabaseClient
                         .storage
                         .from("avatars")
-                        .getPublicUrl(path);
+                        .getPublicUrl(
+                            filePath
+                        );
 
 
                 const avatarUrl =
-                    publicData.publicUrl +
+                    publicUrlData.publicUrl +
                     "?t=" +
                     Date.now();
 
 
                 const {
                     error: profileError
-                } = await supabaseClient
-                    .from("profiles")
-                    .update({
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .update({
 
-                        avatar_url:
-                            avatarUrl
+                            avatar_url:
+                                avatarUrl
 
-                    })
-                    .eq(
-                        "id",
-                        user.id
-                    );
+                        })
+                        .eq(
+                            "id",
+                            user.id
+                        );
 
 
                 if (profileError) {
 
-                    message.textContent =
-                        "Profile update failed: " +
-                        profileError.message;
+                    console.error(
+                        profileError
+                    );
+
+                    status.textContent =
+                        "Image uploaded, but profile could not be updated.";
 
                     return;
                 }
 
 
-                document.getElementById("userPfp")
-                    .src =
+                const pfp =
+                    document.getElementById(
+                        "userPfp"
+                    );
+
+
+                pfp.src =
                     avatarUrl;
 
 
-                message.textContent =
+                pfp.style.display =
+                    "inline-block";
+
+
+                status.textContent =
                     "Profile picture updated!";
 
 
@@ -1274,88 +1295,203 @@
 
             catch (error) {
 
-                message.textContent =
-                    "Error: " +
-                    error.message;
+                console.error(error);
+
+                status.textContent =
+                    "Something went wrong.";
 
             }
 
         }
 
 
-        /* =====================================================
-           LOAD POSTS
-        ===================================================== */
+        // =========================
+        // SHOW USER
+        // =========================
 
-        async function loadPosts() {
-
-            const postsContainer =
-                document.getElementById("posts");
-
-
-            postsContainer.innerHTML =
-                "<p>Loading...</p>";
-
+        async function updateUserDisplay() {
 
             const {
-                data: posts,
-                error: postsError
-            } = await supabaseClient
-                .from("posts")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: false
-                    }
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth
+                    .getUser();
+
+
+            currentUserId =
+                user
+                    ? user.id
+                    : null;
+
+
+            const loginButton =
+                document.getElementById(
+                    "loginButton"
                 );
 
 
-            if (postsError) {
+            const userDisplay =
+                document.getElementById(
+                    "userDisplay"
+                );
 
-                postsContainer.innerHTML =
-                    "<p>Error loading posts: " +
-                    postsError.message +
-                    "</p>";
+
+            const userPfp =
+                document.getElementById(
+                    "userPfp"
+                );
+
+
+            if (!user) {
+
+                loginButton.style.display =
+                    "block";
+
+
+                userDisplay.style.display =
+                    "none";
+
+
+                userPfp.style.display =
+                    "none";
+
 
                 return;
             }
 
 
-            /* Get all replies */
+            const {
+                data: profile
+            } =
+                await supabaseClient
+                    .from("profiles")
+                    .select(
+                        "username, avatar_url"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
+                    .single();
+
+
+            if (profile) {
+
+                document.getElementById(
+                    "usernameDisplay"
+                ).textContent =
+                    profile.username;
+
+
+                if (profile.avatar_url) {
+
+                    userPfp.src =
+                        profile.avatar_url;
+
+
+                    userPfp.style.display =
+                        "inline-block";
+
+                } else {
+
+                    userPfp.style.display =
+                        "none";
+
+                }
+
+            }
+
+
+            loginButton.style.display =
+                "none";
+
+
+            userDisplay.style.display =
+                "flex";
+
+        }
+
+
+        // =========================
+        // LOAD POSTS
+        // =========================
+
+        async function loadPosts() {
+
+            const postsDiv =
+                document.getElementById(
+                    "posts"
+                );
+
+
+            const {
+                data: posts,
+                error
+            } =
+                await supabaseClient
+                    .from("posts")
+                    .select("*")
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
+
+
+            if (error) {
+
+                console.error(error);
+
+                postsDiv.textContent =
+                    "Could not load posts.";
+
+                return;
+            }
+
+
+            // =========================
+            // LOAD REPLIES
+            // =========================
 
             const {
                 data: replies,
                 error: repliesError
-            } = await supabaseClient
-                .from("replies")
-                .select("*")
-                .order(
-                    "created_at",
-                    {
-                        ascending: true
-                    }
-                );
+            } =
+                await supabaseClient
+                    .from("replies")
+                    .select("*")
+                    .order(
+                        "created_at",
+                        {
+                            ascending: true
+                        }
+                    );
 
 
             if (repliesError) {
 
                 console.error(
-                    "Reply loading error:",
+                    "Could not load replies:",
                     repliesError
                 );
 
             }
 
 
-            /* Get profiles for reply authors */
+            // =========================
+            // GET REPLY USER IDS
+            // =========================
 
             const replyUserIds =
                 [
                     ...new Set(
                         (replies || [])
-                            .map(reply =>
-                                reply.user_id
+                            .map(
+                                reply =>
+                                    reply.user_id
                             )
                     )
                 ];
@@ -1364,23 +1500,33 @@
             let profiles = [];
 
 
-            if (replyUserIds.length > 0) {
+            if (
+                replyUserIds.length > 0
+            ) {
 
                 const {
                     data: profileData,
                     error: profileError
-                } = await supabaseClient
-                    .from("profiles")
-                    .select(
-                        "id, username, avatar_url"
-                    )
-                    .in(
-                        "id",
-                        replyUserIds
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .select(
+                            "id, username, avatar_url"
+                        )
+                        .in(
+                            "id",
+                            replyUserIds
+                        );
+
+
+                if (profileError) {
+
+                    console.error(
+                        "Could not load reply profiles:",
+                        profileError
                     );
 
-
-                if (!profileError) {
+                } else {
 
                     profiles =
                         profileData || [];
@@ -1390,483 +1536,641 @@
             }
 
 
+            // =========================
+            // MAKE PROFILE MAP
+            // =========================
+
             const profileMap = {};
 
 
-            profiles.forEach(profile => {
+            profiles.forEach(
+                profile => {
 
-                profileMap[profile.id] =
-                    profile;
+                    profileMap[
+                        profile.id
+                    ] = profile;
 
-            });
+                }
+            );
 
 
-            postsContainer.innerHTML = "";
+            postsDiv.innerHTML = "";
 
 
-            if (!posts || posts.length === 0) {
+            if (
+                !posts ||
+                posts.length === 0
+            ) {
 
-                postsContainer.innerHTML =
-                    "<p>No posts yet.</p>";
+                postsDiv.textContent =
+                    "No posts yet.";
 
                 return;
             }
 
 
-            posts.forEach(post => {
+            // =========================
+            // CREATE POSTS
+            // =========================
 
-                const postElement =
-                    document.createElement("div");
+            posts.forEach(
+                post => {
 
-                postElement.className =
-                    "post";
-
-
-                /* Main post author */
-
-                const author =
-                    document.createElement("div");
-
-                author.className =
-                    "post-author";
-
-
-                const authorPfp =
-                    document.createElement("img");
-
-                authorPfp.className =
-                    "post-author-pfp";
-
-                authorPfp.src =
-                    "whizardpfp.png";
-
-                authorPfp.alt =
-                    "Geewhizard";
-
-
-                const authorInfo =
-                    document.createElement("div");
-
-
-                const authorName =
-                    document.createElement("div");
-
-                authorName.className =
-                    "main-author-name";
-
-                authorName.textContent =
-                    "Geewhizard";
-
-
-                const date =
-                    document.createElement("span");
-
-                date.className =
-                    "post-date";
-
-                date.textContent =
-                    formatDate(
-                        post.created_at
-                    );
-
-
-                authorInfo.appendChild(
-                    authorName
-                );
-
-                authorInfo.appendChild(
-                    date
-                );
-
-
-                author.appendChild(
-                    authorPfp
-                );
-
-                author.appendChild(
-                    authorInfo
-                );
-
-
-                /* Post content */
-
-                const content =
-                    document.createElement("div");
-
-                content.className =
-                    "post-content";
-
-                content.textContent =
-                    post.content;
-
-
-                /* Vote buttons */
-
-                const voteButtons =
-                    document.createElement("div");
-
-                voteButtons.className =
-                    "vote-buttons";
-
-
-                const upButton =
-                    document.createElement("button");
-
-                upButton.textContent =
-                    "👍 " +
-                    (post.upvotes || 0);
-
-
-                upButton.onclick =
-                    () => vote(
-                        post.id,
-                        "up"
-                    );
-
-
-                const downButton =
-                    document.createElement("button");
-
-                downButton.textContent =
-                    "👎 " +
-                    (post.downvotes || 0);
-
-
-                downButton.onclick =
-                    () => vote(
-                        post.id,
-                        "down"
-                    );
-
-
-                voteButtons.appendChild(
-                    upButton
-                );
-
-                voteButtons.appendChild(
-                    downButton
-                );
-
-
-                /* Replies */
-
-                const repliesContainer =
-                    document.createElement("div");
-
-                repliesContainer.className =
-                    "replies";
-
-
-                const repliesTitle =
-                    document.createElement("div");
-
-                repliesTitle.className =
-                    "replies-title";
-
-                repliesTitle.textContent =
-                    "💬 Replies";
-
-
-                repliesContainer.appendChild(
-                    repliesTitle
-                );
-
-
-                const postReplies =
-                    (replies || [])
-                        .filter(
-                            reply =>
-                                Number(reply.post_id) ===
-                                Number(post.id)
+                    const postElement =
+                        document.createElement(
+                            "div"
                         );
 
 
-                postReplies.forEach(reply => {
-
-                    const profile =
-                        profileMap[
-                            reply.user_id
-                        ];
+                    postElement.className =
+                        "post";
 
 
-                    const replyElement =
-                        document.createElement("div");
+                    // =========================
+                    // MAIN POST AUTHOR
+                    // =========================
 
-                    replyElement.className =
-                        "reply";
+                    const author =
+                        document.createElement(
+                            "div"
+                        );
 
 
-                    const replyPfp =
-                        document.createElement("img");
+                    author.className =
+                        "main-post-author";
 
-                    replyPfp.className =
-                        "reply-pfp";
 
-                    replyPfp.src =
-                        profile?.avatar_url ||
+                    const authorPfp =
+                        document.createElement(
+                            "img"
+                        );
+
+
+                    authorPfp.className =
+                        "main-post-pfp";
+
+
+                    authorPfp.src =
                         "whizardpfp.png";
 
-                    replyPfp.alt =
-                        "Profile picture";
+
+                    authorPfp.alt =
+                        "Geewhizard";
 
 
-                    const replyBody =
-                        document.createElement("div");
-
-                    replyBody.className =
-                        "reply-body";
-
-
-                    const replyHeader =
-                        document.createElement("div");
-
-                    replyHeader.className =
-                        "reply-header";
-
-
-                    const replyUsername =
-                        document.createElement("span");
-
-                    replyUsername.className =
-                        "reply-username";
-
-                    replyUsername.textContent =
-                        profile?.username ||
-                        "User";
-
-
-                    const replyDate =
-                        document.createElement("span");
-
-                    replyDate.className =
-                        "reply-date";
-
-                    replyDate.textContent =
-                        formatDate(
-                            reply.created_at
+                    const authorInfo =
+                        document.createElement(
+                            "div"
                         );
 
 
-                    replyHeader.appendChild(
-                        replyUsername
+                    const authorName =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    authorName.className =
+                        "main-post-name";
+
+
+                    authorName.textContent =
+                        "Geewhizard";
+
+
+                    const authorDate =
+                        document.createElement(
+                            "span"
+                        );
+
+
+                    authorDate.className =
+                        "main-post-date";
+
+
+                    authorDate.textContent =
+                        formatDate(
+                            post.created_at
+                        );
+
+
+                    authorInfo.appendChild(
+                        authorName
                     );
 
-                    replyHeader.appendChild(
-                        replyDate
+
+                    authorInfo.appendChild(
+                        authorDate
                     );
 
 
-                    /*
-                       ONLY GEewhizard gets
-                       the delete button.
-                    */
-
-                    if (
-                        currentUserId &&
-                        currentUserId === OWNER_ID
-                    ) {
-
-                        const deleteButton =
-                            document.createElement("button");
-
-                        deleteButton.className =
-                            "delete-reply";
-
-                        deleteButton.textContent =
-                            "Delete";
+                    author.appendChild(
+                        authorPfp
+                    );
 
 
-                        deleteButton.onclick =
-                            () => deleteReply(
-                                reply.id
+                    author.appendChild(
+                        authorInfo
+                    );
+
+
+                    // =========================
+                    // POST CONTENT
+                    // =========================
+
+                    const content =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    content.className =
+                        "post-content";
+
+
+                    content.textContent =
+                        post.content;
+
+
+                    // =========================
+                    // VOTES
+                    // =========================
+
+                    const votes =
+                        document.createElement(
+                            "div"
+                        );
+
+
+                    votes.className =
+                        "votes";
+
+
+                    const upvote =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    upvote.textContent =
+                        "⬆ " +
+                        (
+                            post.upvotes ||
+                            0
+                        );
+
+
+                    const downvote =
+                        document.createElement(
+                            "button"
+                        );
+
+
+                    downvote.textContent =
+                        "⬇ " +
+                        (
+                            post.downvotes ||
+                            0
+                        );
+
+
+                    upvote.onclick =
+                        () =>
+                            vote(
+                                post.id,
+                                "up"
                             );
 
 
-                        replyHeader.appendChild(
-                            deleteButton
+                    downvote.onclick =
+                        () =>
+                            vote(
+                                post.id,
+                                "down"
+                            );
+
+
+                    votes.appendChild(
+                        upvote
+                    );
+
+
+                    votes.appendChild(
+                        downvote
+                    );
+
+
+                    // =========================
+                    // REPLIES CONTAINER
+                    // =========================
+
+                    const repliesContainer =
+                        document.createElement(
+                            "div"
                         );
 
-                    }
+
+                    repliesContainer.className =
+                        "replies-container";
 
 
-                    const replyContent =
-                        document.createElement("div");
-
-                    replyContent.className =
-                        "reply-content";
-
-                    replyContent.textContent =
-                        reply.content;
+                    const repliesTitle =
+                        document.createElement(
+                            "div"
+                        );
 
 
-                    replyBody.appendChild(
-                        replyHeader
-                    );
-
-                    replyBody.appendChild(
-                        replyContent
-                    );
+                    repliesTitle.className =
+                        "replies-title";
 
 
-                    replyElement.appendChild(
-                        replyPfp
-                    );
-
-                    replyElement.appendChild(
-                        replyBody
-                    );
+                    repliesTitle.textContent =
+                        "Replies";
 
 
                     repliesContainer.appendChild(
-                        replyElement
-                    );
-
-                });
-
-
-                /* Reply form */
-
-                const replyForm =
-                    document.createElement("div");
-
-                replyForm.className =
-                    "reply-form";
-
-
-                const replyInput =
-                    document.createElement("input");
-
-                replyInput.className =
-                    "reply-input";
-
-                replyInput.type =
-                    "text";
-
-                replyInput.placeholder =
-                    "Write a reply...";
-
-                replyInput.maxLength =
-                    500;
-
-
-                const replyButton =
-                    document.createElement("button");
-
-                replyButton.className =
-                    "reply-submit";
-
-                replyButton.textContent =
-                    "Reply";
-
-
-                replyButton.onclick =
-                    () => submitReply(
-                        post.id,
-                        replyInput
+                        repliesTitle
                     );
 
 
-                replyInput.addEventListener(
-                    "keydown",
-                    function(event) {
+                    // =========================
+                    // GET REPLIES FOR THIS POST
+                    // =========================
 
-                        if (
-                            event.key === "Enter"
-                        ) {
+                    const postReplies =
+                        (
+                            replies || []
+                        ).filter(
+                            reply =>
+                                Number(
+                                    reply.post_id
+                                ) ===
+                                Number(
+                                    post.id
+                                )
+                        );
 
-                            event.preventDefault();
 
-                            submitReply(
-                                post.id,
-                                replyInput
+                    // =========================
+                    // DISPLAY REPLIES
+                    // =========================
+
+                    postReplies.forEach(
+                        reply => {
+
+                            const replyElement =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            replyElement.className =
+                                "reply";
+
+
+                            const replyPfp =
+                                document.createElement(
+                                    "img"
+                                );
+
+
+                            replyPfp.className =
+                                "reply-pfp";
+
+
+                            const replyProfile =
+                                profileMap[
+                                    reply.user_id
+                                ];
+
+
+                            replyPfp.src =
+                                (
+                                    replyProfile &&
+                                    replyProfile.avatar_url
+                                )
+                                    ? replyProfile.avatar_url
+                                    : "whizardpfp.png";
+
+
+                            replyPfp.alt =
+                                "Profile Picture";
+
+
+                            const replyContentArea =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            replyContentArea.className =
+                                "reply-content-area";
+
+
+                            const replyHeader =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            replyHeader.className =
+                                "reply-header";
+
+
+                            const replyUsername =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            replyUsername.className =
+                                "reply-username";
+
+
+                            replyUsername.textContent =
+                                (
+                                    replyProfile &&
+                                    replyProfile.username
+                                )
+                                    ? replyProfile.username
+                                    : "User";
+
+
+                            const replyDate =
+                                document.createElement(
+                                    "span"
+                                );
+
+
+                            replyDate.className =
+                                "reply-date";
+
+
+                            replyDate.textContent =
+                                formatDate(
+                                    reply.created_at
+                                );
+
+
+                            replyHeader.appendChild(
+                                replyUsername
+                            );
+
+
+                            replyHeader.appendChild(
+                                replyDate
+                            );
+
+
+                            // =========================
+                            // DELETE BUTTON
+                            // ONLY YOU GET THIS
+                            // =========================
+
+                            if (
+                                currentUserId ===
+                                OWNER_ID
+                            ) {
+
+                                const deleteButton =
+                                    document.createElement(
+                                        "button"
+                                    );
+
+
+                                deleteButton.className =
+                                    "delete-reply";
+
+
+                                deleteButton.textContent =
+                                    "Delete";
+
+
+                                deleteButton.onclick =
+                                    () =>
+                                        deleteReply(
+                                            reply.id
+                                        );
+
+
+                                replyHeader.appendChild(
+                                    deleteButton
+                                );
+
+                            }
+
+
+                            const replyText =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            replyText.className =
+                                "reply-text";
+
+
+                            replyText.textContent =
+                                reply.content;
+
+
+                            replyContentArea.appendChild(
+                                replyHeader
+                            );
+
+
+                            replyContentArea.appendChild(
+                                replyText
+                            );
+
+
+                            replyElement.appendChild(
+                                replyPfp
+                            );
+
+
+                            replyElement.appendChild(
+                                replyContentArea
+                            );
+
+
+                            repliesContainer.appendChild(
+                                replyElement
                             );
 
                         }
+                    );
+
+
+                    // =========================
+                    // REPLY FORM
+                    // =========================
+
+                    if (currentUserId) {
+
+                        const replyForm =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        replyForm.className =
+                            "reply-form";
+
+
+                        const replyInput =
+                            document.createElement(
+                                "input"
+                            );
+
+
+                        replyInput.className =
+                            "reply-input";
+
+
+                        replyInput.type =
+                            "text";
+
+
+                        replyInput.placeholder =
+                            "Write a reply...";
+
+
+                        replyInput.maxLength =
+                            500;
+
+
+                        const replyButton =
+                            document.createElement(
+                                "button"
+                            );
+
+
+                        replyButton.className =
+                            "reply-button";
+
+
+                        replyButton.textContent =
+                            "Reply";
+
+
+                        replyButton.onclick =
+                            () =>
+                                submitReply(
+                                    post.id,
+                                    replyInput
+                                );
+
+
+                        replyInput.addEventListener(
+                            "keydown",
+                            function(event) {
+
+                                if (
+                                    event.key ===
+                                    "Enter"
+                                ) {
+
+                                    event.preventDefault();
+
+                                    submitReply(
+                                        post.id,
+                                        replyInput
+                                    );
+
+                                }
+
+                            }
+                        );
+
+
+                        replyForm.appendChild(
+                            replyInput
+                        );
+
+
+                        replyForm.appendChild(
+                            replyButton
+                        );
+
+
+                        repliesContainer.appendChild(
+                            replyForm
+                        );
+
+                    } else {
+
+                        const loginMessage =
+                            document.createElement(
+                                "div"
+                            );
+
+
+                        loginMessage.className =
+                            "login-to-reply";
+
+
+                        loginMessage.textContent =
+                            "Log in to reply.";
+
+
+                        repliesContainer.appendChild(
+                            loginMessage
+                        );
 
                     }
-                );
 
 
-                replyForm.appendChild(
-                    replyInput
-                );
+                    // =========================
+                    // PUT EVERYTHING TOGETHER
+                    // =========================
 
-                replyForm.appendChild(
-                    replyButton
-                );
-
-
-                repliesContainer.appendChild(
-                    replyForm
-                );
+                    postElement.appendChild(
+                        author
+                    );
 
 
-                /* Build post */
-
-                postElement.appendChild(
-                    author
-                );
-
-                postElement.appendChild(
-                    content
-                );
-
-                postElement.appendChild(
-                    voteButtons
-                );
-
-                postElement.appendChild(
-                    repliesContainer
-                );
+                    postElement.appendChild(
+                        content
+                    );
 
 
-                postsContainer.appendChild(
-                    postElement
-                );
-
-            });
-
-        }
+                    postElement.appendChild(
+                        votes
+                    );
 
 
-        /* =====================================================
-           CURRENT USER
-        ===================================================== */
-
-        let currentUserId = null;
+                    postElement.appendChild(
+                        repliesContainer
+                    );
 
 
-        async function getCurrentUser() {
+                    postsDiv.appendChild(
+                        postElement
+                    );
 
-            const {
-                data: {
-                    user
                 }
-            } = await supabaseClient.auth.getUser();
-
-
-            currentUserId =
-                user
-                    ? user.id
-                    : null;
-
-
-            return user;
+            );
 
         }
 
 
-        /* =====================================================
-           SUBMIT REPLY
-        ===================================================== */
+        // =========================
+        // SUBMIT REPLY
+        // =========================
 
         async function submitReply(
             postId,
             input
         ) {
 
-            const user =
-                await getCurrentUser();
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth
+                    .getUser();
 
 
             if (!user) {
@@ -1889,7 +2193,9 @@
             }
 
 
-            if (content.length > 500) {
+            if (
+                content.length > 500
+            ) {
 
                 alert(
                     "Replies can only be 500 characters."
@@ -1901,23 +2207,28 @@
 
             const {
                 error
-            } = await supabaseClient
-                .from("replies")
-                .insert({
+            } =
+                await supabaseClient
+                    .from("replies")
+                    .insert({
 
-                    post_id:
-                        postId,
+                        post_id:
+                            postId,
 
-                    user_id:
-                        user.id,
+                        user_id:
+                            user.id,
 
-                    content:
-                        content
+                        content:
+                            content
 
-                });
+                    });
 
 
             if (error) {
+
+                console.error(
+                    error
+                );
 
                 alert(
                     "Could not post reply: " +
@@ -1936,17 +2247,21 @@
         }
 
 
-        /* =====================================================
-           DELETE REPLY
-           RLS ALSO PROTECTS THIS SERVER-SIDE
-        ===================================================== */
+        // =========================
+        // DELETE REPLY
+        // =========================
 
         async function deleteReply(
             replyId
         ) {
 
-            const user =
-                await getCurrentUser();
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth
+                    .getUser();
 
 
             if (!user) {
@@ -1955,8 +2270,11 @@
             }
 
 
+            // Front-end check
+
             if (
-                user.id !== OWNER_ID
+                user.id !==
+                OWNER_ID
             ) {
 
                 alert(
@@ -1967,13 +2285,11 @@
             }
 
 
-            const confirmed =
-                confirm(
+            if (
+                !confirm(
                     "Delete this reply?"
-                );
-
-
-            if (!confirmed) {
+                )
+            ) {
 
                 return;
             }
@@ -1981,16 +2297,21 @@
 
             const {
                 error
-            } = await supabaseClient
-                .from("replies")
-                .delete()
-                .eq(
-                    "id",
-                    replyId
-                );
+            } =
+                await supabaseClient
+                    .from("replies")
+                    .delete()
+                    .eq(
+                        "id",
+                        replyId
+                    );
 
 
             if (error) {
+
+                console.error(
+                    error
+                );
 
                 alert(
                     "Could not delete reply: " +
@@ -2006,23 +2327,28 @@
         }
 
 
-        /* =====================================================
-           VOTING
-        ===================================================== */
+        // =========================
+        // VOTING
+        // =========================
 
         async function vote(
             postId,
             voteType
         ) {
 
-            const user =
-                await getCurrentUser();
+            const {
+                data: {
+                    user
+                }
+            } =
+                await supabaseClient.auth
+                    .getUser();
 
 
             if (!user) {
 
                 alert(
-                    "You need to log in to vote."
+                    "You need to log in before voting!"
                 );
 
                 return;
@@ -2031,53 +2357,58 @@
 
             const {
                 data: existingVote,
-                error: voteFetchError
-            } = await supabaseClient
-                .from("post_votes")
-                .select("*")
-                .eq(
-                    "post_id",
-                    postId
-                )
-                .eq(
-                    "user_id",
-                    user.id
-                )
-                .maybeSingle();
+                error: findError
+            } =
+                await supabaseClient
+                    .from("post_votes")
+                    .select("*")
+                    .eq(
+                        "post_id",
+                        postId
+                    )
+                    .eq(
+                        "user_id",
+                        user.id
+                    )
+                    .maybeSingle();
 
 
-            if (voteFetchError) {
+            if (findError) {
 
-                alert(
-                    voteFetchError.message
+                console.error(
+                    findError
                 );
 
                 return;
             }
 
 
-            /* Remove existing vote */
+            // =========================
+            // REMOVE SAME VOTE
+            // =========================
 
             if (
                 existingVote &&
-                existingVote.vote_type === voteType
+                existingVote.vote_type ===
+                voteType
             ) {
 
                 const {
                     error
-                } = await supabaseClient
-                    .from("post_votes")
-                    .delete()
-                    .eq(
-                        "id",
-                        existingVote.id
-                    );
+                } =
+                    await supabaseClient
+                        .from("post_votes")
+                        .delete()
+                        .eq(
+                            "id",
+                            existingVote.id
+                        );
 
 
                 if (error) {
 
-                    alert(
-                        error.message
+                    console.error(
+                        error
                     );
 
                     return;
@@ -2090,28 +2421,72 @@
                         : "downvotes";
 
 
-                await changePostCount(
-                    postId,
-                    column,
-                    -1
-                );
+                const {
+                    data: post
+                } =
+                    await supabaseClient
+                        .from("posts")
+                        .select(
+                            "upvotes, downvotes"
+                        )
+                        .eq(
+                            "id",
+                            postId
+                        )
+                        .single();
+
+
+                if (post) {
+
+                    await supabaseClient
+                        .from("posts")
+                        .update({
+
+                            [column]:
+                                Math.max(
+                                    0,
+                                    (
+                                        post[column] ||
+                                        0
+                                    ) - 1
+                                )
+
+                        })
+                        .eq(
+                            "id",
+                            postId
+                        );
+
+                }
+
+
+                await loadPosts();
+
+                return;
 
             }
 
 
-            /* Change vote */
+            // =========================
+            // CHANGE VOTE
+            // =========================
 
-            else if (
-                existingVote
-            ) {
+            if (existingVote) {
 
-                const oldType =
-                    existingVote.vote_type;
+                const oldColumn =
+                    existingVote.vote_type ===
+                    "up"
+                        ? "upvotes"
+                        : "downvotes";
 
 
-                const {
-                    error
-                } = await supabaseClient
+                const newColumn =
+                    voteType === "up"
+                        ? "upvotes"
+                        : "downvotes";
+
+
+                await supabaseClient
                     .from("post_votes")
                     .update({
 
@@ -2125,51 +2500,81 @@
                     );
 
 
-                if (error) {
+                const {
+                    data: post
+                } =
+                    await supabaseClient
+                        .from("posts")
+                        .select(
+                            "upvotes, downvotes"
+                        )
+                        .eq(
+                            "id",
+                            postId
+                        )
+                        .single();
 
-                    alert(
-                        error.message
-                    );
 
-                    return;
+                if (post) {
+
+                    await supabaseClient
+                        .from("posts")
+                        .update({
+
+                            upvotes:
+                                Math.max(
+                                    0,
+                                    (
+                                        post.upvotes ||
+                                        0
+                                    ) +
+                                    (
+                                        newColumn ===
+                                        "upvotes"
+                                            ? 1
+                                            : -1
+                                    )
+                                ),
+
+                            downvotes:
+                                Math.max(
+                                    0,
+                                    (
+                                        post.downvotes ||
+                                        0
+                                    ) +
+                                    (
+                                        newColumn ===
+                                        "downvotes"
+                                            ? 1
+                                            : -1
+                                    )
+                                )
+
+                        })
+                        .eq(
+                            "id",
+                            postId
+                        );
+
                 }
 
 
-                const oldColumn =
-                    oldType === "up"
-                        ? "upvotes"
-                        : "downvotes";
+                await loadPosts();
 
-
-                const newColumn =
-                    voteType === "up"
-                        ? "upvotes"
-                        : "downvotes";
-
-
-                await changePostCount(
-                    postId,
-                    oldColumn,
-                    -1
-                );
-
-
-                await changePostCount(
-                    postId,
-                    newColumn,
-                    1
-                );
+                return;
 
             }
 
 
-            /* Create new vote */
+            // =========================
+            // FIRST VOTE
+            // =========================
 
-            else {
-
-                const {
-                    error
-                } = await supabaseClient
+            const {
+                error: insertError
+            } =
+                await supabaseClient
                     .from("post_votes")
                     .insert({
 
@@ -2185,27 +2590,54 @@
                     });
 
 
-                if (error) {
+            if (insertError) {
 
-                    alert(
-                        error.message
-                    );
-
-                    return;
-                }
-
-
-                const column =
-                    voteType === "up"
-                        ? "upvotes"
-                        : "downvotes";
-
-
-                await changePostCount(
-                    postId,
-                    column,
-                    1
+                console.error(
+                    insertError
                 );
+
+                return;
+            }
+
+
+            const column =
+                voteType === "up"
+                    ? "upvotes"
+                    : "downvotes";
+
+
+            const {
+                data: post
+            } =
+                await supabaseClient
+                    .from("posts")
+                    .select(
+                        column
+                    )
+                    .eq(
+                        "id",
+                        postId
+                    )
+                    .single();
+
+
+            if (post) {
+
+                await supabaseClient
+                    .from("posts")
+                    .update({
+
+                        [column]:
+                            (
+                                post[column] ||
+                                0
+                            ) + 1
+
+                    })
+                    .eq(
+                        "id",
+                        postId
+                    );
 
             }
 
@@ -2215,87 +2647,9 @@
         }
 
 
-        /* =====================================================
-           CHANGE POST VOTE COUNT
-        ===================================================== */
-
-        async function changePostCount(
-            postId,
-            column,
-            amount
-        ) {
-
-            const {
-                data: post,
-                error: fetchError
-            } = await supabaseClient
-                .from("posts")
-                .select(
-                    column
-                )
-                .eq(
-                    "id",
-                    postId
-                )
-                .single();
-
-
-            if (fetchError) {
-
-                console.error(
-                    fetchError
-                );
-
-                return;
-            }
-
-
-            const current =
-                Number(
-                    post[column] || 0
-                );
-
-
-            const newValue =
-                Math.max(
-                    0,
-                    current + amount
-                );
-
-
-            const update = {};
-
-            update[column] =
-                newValue;
-
-
-            const {
-                error
-            } = await supabaseClient
-                .from("posts")
-                .update(
-                    update
-                )
-                .eq(
-                    "id",
-                    postId
-                );
-
-
-            if (error) {
-
-                console.error(
-                    error
-                );
-
-            }
-
-        }
-
-
-        /* =====================================================
-           DATE FORMAT
-        ===================================================== */
+        // =========================
+        // DATE FORMAT
+        // =========================
 
         function formatDate(
             date
@@ -2313,13 +2667,101 @@
         }
 
 
-        /* =====================================================
-           STARTUP
-        ===================================================== */
+        // =========================
+        // CLICK OUTSIDE
+        // =========================
+
+        document.addEventListener(
+            "click",
+            function(event) {
+
+                const loginBox =
+                    document.getElementById(
+                        "loginBox"
+                    );
+
+
+                const loginButton =
+                    document.getElementById(
+                        "loginButton"
+                    );
+
+
+                const pfpBox =
+                    document.getElementById(
+                        "pfpBox"
+                    );
+
+
+                const changePfpButton =
+                    document.getElementById(
+                        "changePfpButton"
+                    );
+
+
+                // Close login box
+
+                if (
+                    loginBox.style.display ===
+                    "block" &&
+
+                    !loginBox.contains(
+                        event.target
+                    ) &&
+
+                    event.target !==
+                    loginButton
+                ) {
+
+                    loginBox.style.display =
+                        "none";
+
+                }
+
+
+                // Close PFP box
+
+                if (
+                    pfpBox.style.display ===
+                    "block" &&
+
+                    !pfpBox.contains(
+                        event.target
+                    ) &&
+
+                    event.target !==
+                    changePfpButton
+                ) {
+
+                    pfpBox.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        // =========================
+        // AUTH STATE
+        // =========================
+
+        supabaseClient.auth.onAuthStateChange(
+            async function() {
+
+                await updateUserDisplay();
+
+                await loadPosts();
+
+            }
+        );
+
+
+        // =========================
+        // START
+        // =========================
 
         async function start() {
-
-            await getCurrentUser();
 
             await updateUserDisplay();
 
@@ -2330,24 +2772,8 @@
 
         start();
 
-
-        /* =====================================================
-           AUTH STATE CHANGES
-        ===================================================== */
-
-        supabaseClient.auth.onAuthStateChange(
-            async function() {
-
-                await getCurrentUser();
-
-                await updateUserDisplay();
-
-                await loadPosts();
-
-            }
-        );
-
     </script>
 
 </body>
+
 </html>
