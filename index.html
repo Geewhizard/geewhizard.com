@@ -10,6 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         /* =========================
            LOGIN BUTTON
            ========================= */
@@ -18,7 +19,6 @@
             position: absolute;
             top: 15px;
             left: 15px;
-
             z-index: 10000;
 
             color: white;
@@ -39,7 +39,6 @@
             display: none;
 
             position: absolute;
-
             top: 50px;
             left: 15px;
 
@@ -97,7 +96,7 @@
 
 
         /* =========================
-           LOGGED IN USER
+           USER DISPLAY
            ========================= */
 
         #userDisplay {
@@ -105,7 +104,7 @@
 
             position: absolute;
 
-            top: 15px;
+            top: 10px;
             left: 15px;
 
             color: white;
@@ -115,6 +114,28 @@
             font-size: 18px;
 
             z-index: 10000;
+
+            align-items: center;
+
+            gap: 8px;
+        }
+
+
+        /* PROFILE PICTURE */
+
+        #userPfp {
+            width: 40px;
+            height: 40px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            display: none;
+
+            border: 2px solid white;
+
+            vertical-align: middle;
         }
 
 
@@ -128,7 +149,79 @@
             margin-left: 5px;
         }
 
+
+        /* =========================
+           PFP UPLOAD
+           ========================= */
+
+        #pfpBox {
+            display: none;
+
+            position: absolute;
+
+            top: 60px;
+            left: 15px;
+
+            width: 250px;
+
+            padding: 15px;
+
+            background: white;
+
+            color: black;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.5);
+
+            z-index: 10001;
+        }
+
+
+        #pfpBox input {
+            width: 100%;
+
+            box-sizing: border-box;
+
+            margin-bottom: 10px;
+        }
+
+
+        #pfpBox button {
+            padding: 8px 12px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+        }
+
+
+        #pfpStatus {
+            margin-top: 8px;
+
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           CHANGE PFP BUTTON
+           ========================= */
+
+        #changePfpButton {
+            color: white;
+
+            cursor: pointer;
+
+            text-decoration: underline;
+
+            margin-left: 5px;
+        }
+
     </style>
+
 </head>
 
 
@@ -141,27 +234,49 @@
 
     <div
         id="loginButton"
-        onclick="toggleLogin()"
+        onclick="toggleLogin(event)"
     >
         Login
     </div>
 
 
+    <!-- =========================
+         USER DISPLAY
+         ========================= -->
+
     <div id="userDisplay">
 
-        Logged in as
+        <img
+            id="userPfp"
+            src=""
+            alt="Profile Picture"
+        >
 
-        <span id="usernameDisplay"></span>
+        <span>
+            Logged in as
+            <span id="usernameDisplay"></span>
+        </span>
+
+        <span
+            id="changePfpButton"
+            onclick="togglePfpBox(event)"
+        >
+            Change PFP
+        </span>
 
         <span
             id="logoutButton"
-            onclick="logout()"
+            onclick="logout(event)"
         >
             Logout
         </span>
 
     </div>
 
+
+    <!-- =========================
+         LOGIN BOX
+         ========================= -->
 
     <div id="loginBox">
 
@@ -198,6 +313,31 @@
 
 
     <!-- =========================
+         PFP BOX
+         ========================= -->
+
+    <div id="pfpBox">
+
+        <strong>Change Profile Picture</strong>
+
+        <br><br>
+
+        <input
+            id="pfpInput"
+            type="file"
+            accept="image/*"
+        >
+
+        <button onclick="uploadPfp()">
+            Upload
+        </button>
+
+        <div id="pfpStatus"></div>
+
+    </div>
+
+
+    <!-- =========================
          MAIN PAGE
          ========================= -->
 
@@ -214,7 +354,9 @@
     <div id="posts"></div>
 
 
-    <!-- GIF BUTTON -->
+    <!-- =========================
+         GIF BUTTON
+         ========================= -->
 
     <a
         href="page2.html"
@@ -264,15 +406,23 @@
         // LOGIN BOX
         // =========================
 
-        function toggleLogin() {
+        function toggleLogin(event) {
+
+            if (event) {
+                event.stopPropagation();
+            }
 
             const box =
                 document.getElementById("loginBox");
 
+            const pfpBox =
+                document.getElementById("pfpBox");
 
-            if (
-                box.style.display === "block"
-            ) {
+
+            pfpBox.style.display = "none";
+
+
+            if (box.style.display === "block") {
 
                 box.style.display = "none";
 
@@ -366,7 +516,9 @@
 
                             id: data.user.id,
 
-                            username: username
+                            username: username,
+
+                            avatar_url: null
 
                         });
 
@@ -461,22 +613,6 @@
                 "Logged in!";
 
 
-            updateUserDisplay();
-
-            loadPosts();
-
-        }
-
-
-        // =========================
-        // LOGOUT
-        // =========================
-
-        async function logout() {
-
-            await supabaseClient.auth.signOut();
-
-
             document.getElementById(
                 "loginBox"
             ).style.display = "none";
@@ -490,6 +626,411 @@
 
 
         // =========================
+        // LOGOUT
+        // =========================
+
+        async function logout(event) {
+
+            if (event) {
+                event.stopPropagation();
+            }
+
+
+            await supabaseClient.auth.signOut();
+
+
+            document.getElementById(
+                "loginBox"
+            ).style.display = "none";
+
+
+            document.getElementById(
+                "pfpBox"
+            ).style.display = "none";
+
+
+            updateUserDisplay();
+
+            loadPosts();
+
+        }
+
+
+        // =========================
+        // PFP BOX
+        // =========================
+
+        function togglePfpBox(event) {
+
+            if (event) {
+                event.stopPropagation();
+            }
+
+
+            const box =
+                document.getElementById(
+                    "pfpBox"
+                );
+
+
+            document.getElementById(
+                "loginBox"
+            ).style.display = "none";
+
+
+            if (box.style.display === "block") {
+
+                box.style.display = "none";
+
+            } else {
+
+                box.style.display = "block";
+
+            }
+
+        }
+
+
+        // =========================
+        // RESIZE + COMPRESS IMAGE
+        // =========================
+
+        function processImage(file) {
+
+            return new Promise(
+                (resolve, reject) => {
+
+                    const image =
+                        new Image();
+
+
+                    image.onload = function() {
+
+                        const size =
+                            Math.min(
+                                image.width,
+                                image.height
+                            );
+
+
+                        const canvas =
+                            document.createElement(
+                                "canvas"
+                            );
+
+
+                        const outputSize =
+                            256;
+
+
+                        canvas.width =
+                            outputSize;
+
+
+                        canvas.height =
+                            outputSize;
+
+
+                        const ctx =
+                            canvas.getContext(
+                                "2d"
+                            );
+
+
+                        // Find center square
+
+                        const cropX =
+                            (
+                                image.width -
+                                size
+                            ) / 2;
+
+
+                        const cropY =
+                            (
+                                image.height -
+                                size
+                            ) / 2;
+
+
+                        // Draw square image
+
+                        ctx.drawImage(
+
+                            image,
+
+                            cropX,
+                            cropY,
+
+                            size,
+                            size,
+
+                            0,
+                            0,
+
+                            outputSize,
+                            outputSize
+
+                        );
+
+
+                        // Compress to JPEG
+
+                        canvas.toBlob(
+
+                            function(blob) {
+
+                                if (!blob) {
+
+                                    reject(
+                                        new Error(
+                                            "Could not compress image."
+                                        )
+                                    );
+
+                                    return;
+
+                                }
+
+
+                                resolve(blob);
+
+                            },
+
+                            "image/jpeg",
+
+                            0.75
+
+                        );
+
+                    };
+
+
+                    image.onerror =
+                        function() {
+
+                            reject(
+                                new Error(
+                                    "Could not read image."
+                                )
+                            );
+
+                        };
+
+
+                    image.src =
+                        URL.createObjectURL(
+                            file
+                        );
+
+                }
+            );
+
+        }
+
+
+        // =========================
+        // UPLOAD PFP
+        // =========================
+
+        async function uploadPfp() {
+
+            const input =
+                document.getElementById(
+                    "pfpInput"
+                );
+
+
+            const status =
+                document.getElementById(
+                    "pfpStatus"
+                );
+
+
+            const file =
+                input.files[0];
+
+
+            if (!file) {
+
+                status.textContent =
+                    "Choose an image first.";
+
+                return;
+
+            }
+
+
+            const {
+                data: { user }
+            } =
+                await supabaseClient.auth
+                    .getUser();
+
+
+            if (!user) {
+
+                status.textContent =
+                    "You need to be logged in.";
+
+                return;
+
+            }
+
+
+            status.textContent =
+                "Processing image...";
+
+
+            try {
+
+                // Make image square and compress it
+
+                const compressedImage =
+                    await processImage(file);
+
+
+                status.textContent =
+                    "Uploading...";
+
+
+                // Every user gets their own folder
+
+                const filePath =
+                    user.id +
+                    "/avatar.jpg";
+
+
+                // Upload image
+
+                const {
+                    error: uploadError
+                } =
+                    await supabaseClient
+                        .storage
+                        .from("avatars")
+                        .upload(
+
+                            filePath,
+
+                            compressedImage,
+
+                            {
+
+                                contentType:
+                                    "image/jpeg",
+
+                                upsert:
+                                    true
+
+                            }
+
+                        );
+
+
+                if (uploadError) {
+
+                    console.error(
+                        uploadError
+                    );
+
+                    status.textContent =
+                        "Upload failed: " +
+                        uploadError.message;
+
+                    return;
+
+                }
+
+
+                // Get public URL
+
+                const {
+                    data: publicUrlData
+                } =
+                    supabaseClient
+                        .storage
+                        .from("avatars")
+                        .getPublicUrl(
+                            filePath
+                        );
+
+
+                const avatarUrl =
+                    publicUrlData.publicUrl +
+                    "?t=" +
+                    Date.now();
+
+
+                // Save URL to profile
+
+                const {
+                    error: profileError
+                } =
+                    await supabaseClient
+                        .from("profiles")
+                        .update({
+
+                            avatar_url:
+                                avatarUrl
+
+                        })
+                        .eq(
+                            "id",
+                            user.id
+                        );
+
+
+                if (profileError) {
+
+                    console.error(
+                        profileError
+                    );
+
+                    status.textContent =
+                        "Image uploaded, but profile could not be updated.";
+
+                    return;
+
+                }
+
+
+                // Update displayed PFP
+
+                const pfp =
+                    document.getElementById(
+                        "userPfp"
+                    );
+
+
+                pfp.src =
+                    avatarUrl;
+
+
+                pfp.style.display =
+                    "inline-block";
+
+
+                status.textContent =
+                    "Profile picture updated!";
+
+
+                input.value = "";
+
+
+            } catch (error) {
+
+                console.error(error);
+
+                status.textContent =
+                    "Something went wrong.";
+
+            }
+
+        }
+
+
+        // =========================
         // SHOW USER
         // =========================
 
@@ -498,7 +1039,8 @@
             const {
                 data: { user }
             } =
-                await supabaseClient.auth.getUser();
+                await supabaseClient.auth
+                    .getUser();
 
 
             const loginButton =
@@ -513,13 +1055,25 @@
                 );
 
 
+            const userPfp =
+                document.getElementById(
+                    "userPfp"
+                );
+
+
             if (!user) {
 
                 loginButton.style.display =
                     "block";
 
+
                 userDisplay.style.display =
                     "none";
+
+
+                userPfp.style.display =
+                    "none";
+
 
                 return;
 
@@ -529,8 +1083,13 @@
             const { data: profile } =
                 await supabaseClient
                     .from("profiles")
-                    .select("username")
-                    .eq("id", user.id)
+                    .select(
+                        "username, avatar_url"
+                    )
+                    .eq(
+                        "id",
+                        user.id
+                    )
                     .single();
 
 
@@ -541,6 +1100,23 @@
                 ).textContent =
                     profile.username;
 
+
+                if (profile.avatar_url) {
+
+                    userPfp.src =
+                        profile.avatar_url;
+
+
+                    userPfp.style.display =
+                        "inline-block";
+
+                } else {
+
+                    userPfp.style.display =
+                        "none";
+
+                }
+
             }
 
 
@@ -549,7 +1125,7 @@
 
 
             userDisplay.style.display =
-                "block";
+                "flex";
 
         }
 
@@ -570,11 +1146,12 @@
                 await supabaseClient
                     .from("posts")
                     .select("*")
-                    .order("created_at", {
-
-                        ascending: false
-
-                    });
+                    .order(
+                        "created_at",
+                        {
+                            ascending: false
+                        }
+                    );
 
 
             if (error) {
@@ -720,8 +1297,6 @@
             }
 
 
-            // Find existing vote
-
             const {
                 data: existingVote,
                 error: findError
@@ -729,14 +1304,22 @@
                 await supabaseClient
                     .from("post_votes")
                     .select("*")
-                    .eq("post_id", postId)
-                    .eq("user_id", user.id)
+                    .eq(
+                        "post_id",
+                        postId
+                    )
+                    .eq(
+                        "user_id",
+                        user.id
+                    )
                     .maybeSingle();
 
 
             if (findError) {
 
-                console.error(findError);
+                console.error(
+                    findError
+                );
 
                 return;
 
@@ -765,7 +1348,9 @@
 
                 if (error) {
 
-                    console.error(error);
+                    console.error(
+                        error
+                    );
 
                     return;
 
@@ -871,8 +1456,8 @@
                                 (
                                     newColumn ===
                                     "upvotes"
-                                    ? 1
-                                    : -1
+                                        ? 1
+                                        : -1
                                 )
                             ),
 
@@ -883,8 +1468,8 @@
                                 (
                                     newColumn ===
                                     "downvotes"
-                                    ? 1
-                                    : -1
+                                        ? 1
+                                        : -1
                                 )
                             )
 
@@ -913,11 +1498,14 @@
                     .from("post_votes")
                     .insert({
 
-                        post_id: postId,
+                        post_id:
+                            postId,
 
-                        user_id: user.id,
+                        user_id:
+                            user.id,
 
-                        vote_type: voteType
+                        vote_type:
+                            voteType
 
                     });
 
@@ -970,7 +1558,7 @@
 
 
         // =========================
-        // CLOSE LOGIN WHEN CLICKING OUTSIDE
+        // CLICK OUTSIDE
         // =========================
 
         document.addEventListener(
@@ -989,6 +1577,20 @@
                     );
 
 
+                const pfpBox =
+                    document.getElementById(
+                        "pfpBox"
+                    );
+
+
+                const changePfpButton =
+                    document.getElementById(
+                        "changePfpButton"
+                    );
+
+
+                // Close login box
+
                 if (
                     loginBox.style.display ===
                     "block" &&
@@ -1002,6 +1604,26 @@
                 ) {
 
                     loginBox.style.display =
+                        "none";
+
+                }
+
+
+                // Close PFP box
+
+                if (
+                    pfpBox.style.display ===
+                    "block" &&
+
+                    !pfpBox.contains(
+                        event.target
+                    ) &&
+
+                    event.target !==
+                    changePfpButton
+                ) {
+
+                    pfpBox.style.display =
                         "none";
 
                 }
@@ -1021,4 +1643,5 @@
     </script>
 
 </body>
+
 </html>
